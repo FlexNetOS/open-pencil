@@ -27,6 +27,10 @@
 
 ### Fixes
 
+- Fix `.pen` round-trip crash caused by ID collision between serialized fig node IDs and graph-internal page IDs. `SceneGraph.createNode` now drops conflicting `overrides.id` values and generates fresh IDs instead of silently overwriting existing nodes.
+- Fix `.pen` export data loss — `exportPenFile` now includes internal pages so all nodes are serialized (was dropping nodes on internal-only canvases).
+- Fix `.fig` format reader fallback — `Invalid fig-make header` errors now correctly fall back to standard fig parsing instead of being incorrectly re-thrown.
+- Add `SceneGraph.detectCycles()` to detect parent-pointer cycles before layout computation triggers a stack overflow.
 - Fix `.fig` export of component variant properties and text stretch alignment so designs round-trip correctly through Figma.
 - Fix CJK and Arabic text rendering — fallback fonts now load before the first paint instead of showing blank text.
 - Fix large `.fig` files freezing on open — parsing runs in a worker, and the viewport fits to content after loading.

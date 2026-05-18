@@ -62,7 +62,6 @@ function resolveFontFamily(raw: string | undefined, ctx: VarContext): string {
 
 function buildBaseOverrides(pen: PenNode): Partial<SceneNode> {
   return {
-    id: pen.id,
     name: pen.name ?? (pen.type === 'icon_font' ? (pen.iconFontName ?? 'Icon') : pen.type),
     x: pen.x ?? 0,
     y: pen.y ?? 0,
@@ -201,14 +200,15 @@ function applyAllRefProps(
   graph: SceneGraph,
   componentIds: Map<string, string>,
   penSources: Map<string, PenNode>,
+  nodeMap: Map<string, string>,
   ctx: VarContext
 ): void {
   for (const pen of penNodes) {
     if (pen.type === 'ref') {
-      const node = graph.getNode(pen.id)
+      const node = graph.getNode(nodeMap.get(pen.id) ?? pen.id)
       if (node) applyRefProps(node, pen, graph, componentIds, penSources, ctx)
     }
-    if (pen.children) applyAllRefProps(pen.children, graph, componentIds, penSources, ctx)
+    if (pen.children) applyAllRefProps(pen.children, graph, componentIds, penSources, nodeMap, ctx)
   }
 }
 
@@ -224,7 +224,8 @@ function createSceneNode(
   graph: SceneGraph,
   ctx: VarContext,
   componentIds: Map<string, string>,
-  penSources: Map<string, PenNode>
+  penSources: Map<string, PenNode>,
+  nodeMap: Map<string, string>
 ): string | null {
   if (pen.type === 'prompt') return null
   if (pen.theme) applyTheme(pen.theme, ctx)
@@ -244,6 +245,7 @@ function createSceneNode(
   }
 
   const node = graph.createNode(mapNodeType(pen), parentId, overrides)
+  nodeMap.set(pen.id, node.id)
 
   if (pen.fill !== undefined) node.fills = convertFill(pen.fill, ctx, node)
   if (pen.stroke) node.strokes = convertStroke(pen.stroke, ctx, node)
@@ -285,7 +287,7 @@ function createSceneNode(
 
   if (pen.children) {
     for (const child of pen.children) {
-      createSceneNode(child, node.id, graph, ctx, componentIds, penSources)
+      createSceneNode(child, node.id, graph, ctx, componentIds, penSources, nodeMap)
     }
   }
 
@@ -314,15 +316,17 @@ function collectByNameType(
 function findCloneByComponentId(
   graph: SceneGraph,
   parentId: string,
-  origId: string
+  origId: string,
+  nodeMap: Map<string, string>
 ): SceneNode | undefined {
   const parent = graph.getNode(parentId)
   if (!parent) return undefined
+  const mappedId = nodeMap.get(origId) ?? origId
   for (const childId of parent.childIds) {
     const child = graph.getNode(childId)
     if (!child) continue
-    if (child.componentId === origId) return child
-    const deep = findCloneByComponentId(graph, childId, origId)
+    if (child.componentId === mappedId) return child
+    const deep = findCloneByComponentId(graph, childId, origId, nodeMap)
     if (deep) return deep
   }
   return undefined
@@ -331,9 +335,10 @@ function findCloneByComponentId(
 function findCloneByNameFallback(
   graph: SceneGraph,
   parentId: string,
-  origId: string
+  origId: string,
+  nodeMap: Map<string, string>
 ): SceneNode | undefined {
-  const orig = graph.getNode(origId)
+  const orig = graph.getNode(nodeMap.get(origId) ?? origId)
   if (!orig) return undefined
   const matches: SceneNode[] = []
   collectByNameType(graph, parentId, orig.name, orig.type, matches, 0)
@@ -372,23 +377,24 @@ function applyDescendantOverrides(
   pen: PenNode,
   ctx: VarContext,
   componentIds: Map<string, string>,
-  penSources: Map<string, PenNode>
+  penSources: Map<string, PenNode>,
+  nodeMap: Map<string, string>
 ): void {
   if (pen.type !== 'ref' || !pen.descendants) return
-  const instanceNode = graph.getNode(pen.id)
+  const instanceNode = graph.getNode(nodeMap.get(pen.id) ?? pen.id)
   if (!instanceNode) return
 
   for (const [origId, overrideData] of Object.entries(pen.descendants)) {
     const clone =
-      findCloneByComponentId(graph, instanceNode.id, origId) ??
-      findCloneByNameFallback(graph, instanceNode.id, origId)
+      findCloneByComponentId(graph, instanceNode.id, origId, nodeMap) ??
+      findCloneByNameFallback(graph, instanceNode.id, origId, nodeMap)
 
     if (clone) {
       if (overrideData.children) {
         const toDelete = clone.childIds.slice()
         for (const childId of toDelete) graph.deleteNode(childId)
         for (const child of overrideData.children) {
-          createSceneNode(child, clone.id, graph, ctx, componentIds, penSources)
+          createSceneNode(child, clone.id, graph, ctx, componentIds, penSources, nodeMap)
         }
       }
       applyOverrideProps(clone, overrideData, ctx)
@@ -402,7 +408,8 @@ function applyDescendantOverrides(
         graph,
         ctx,
         componentIds,
-        penSources
+        penSources,
+        nodeMap
       )
     }
   }
@@ -413,11 +420,12 @@ function walkAndApplyOverrides(
   graph: SceneGraph,
   ctx: VarContext,
   componentIds: Map<string, string>,
-  penSources: Map<string, PenNode>
+  penSources: Map<string, PenNode>,
+  nodeMap: Map<string, string>
 ): void {
   for (const pen of nodes) {
-    applyDescendantOverrides(graph, pen, ctx, componentIds, penSources)
-    if (pen.children) walkAndApplyOverrides(pen.children, graph, ctx, componentIds, penSources)
+    applyDescendantOverrides(graph, pen, ctx, componentIds, penSources, nodeMap)
+    if (pen.children) walkAndApplyOverrides(pen.children, graph, ctx, componentIds, penSources, nodeMap)
   }
 }
 
@@ -448,12 +456,12 @@ function resolveNodeVars(node: SceneNode, graph: SceneGraph, ctx: VarContext): v
   }
 }
 
-function resolveThemeVariables(penNodes: PenNode[], graph: SceneGraph, ctx: VarContext): void {
+function resolveThemeVariables(penNodes: PenNode[], graph: SceneGraph, ctx: VarContext, nodeMap: Map<string, string>): void {
   for (const pen of penNodes) {
     if (pen.theme) applyTheme(pen.theme, ctx)
-    const node = graph.getNode(pen.id)
+    const node = graph.getNode(nodeMap.get(pen.id) ?? pen.id)
     if (node) resolveNodeVars(node, graph, ctx)
-    if (pen.children) resolveThemeVariables(pen.children, graph, ctx)
+    if (pen.children) resolveThemeVariables(pen.children, graph, ctx, nodeMap)
   }
 }
 
@@ -494,16 +502,18 @@ export function parsePenFile(json: string): SceneGraph {
 
   collectComponentIds(doc.children, componentIds)
 
+  const nodeMap = new Map<string, string>()
+
   const page = graph.addPage(doc.children[0]?.name ?? 'Page 1')
   for (const child of doc.children) {
-    createSceneNode(child, page.id, graph, ctx, componentIds, penSources)
+    createSceneNode(child, page.id, graph, ctx, componentIds, penSources, nodeMap)
   }
 
-  applyAllRefProps(doc.children, graph, componentIds, penSources, ctx)
+  applyAllRefProps(doc.children, graph, componentIds, penSources, nodeMap, ctx)
   populateInstances(graph)
-  walkAndApplyOverrides(doc.children, graph, ctx, componentIds, penSources)
+  walkAndApplyOverrides(doc.children, graph, ctx, componentIds, penSources, nodeMap)
   populateInstances(graph)
-  resolveThemeVariables(doc.children, graph, ctx)
+  resolveThemeVariables(doc.children, graph, ctx, nodeMap)
   fixInstanceWidths(graph)
   fixTextWidths(graph)
 

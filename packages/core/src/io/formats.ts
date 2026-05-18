@@ -1,7 +1,8 @@
 import { sceneNodeToJSX, selectionToJSX } from '#core/design-jsx'
 
 import { exportFigFile, parseFigFile } from './formats/fig'
-import { parsePenFile } from './formats/pen'
+import { parseFigMakeFile } from './formats/figmake'
+import { exportPenFile, parsePenFile } from './formats/pen'
 import { headlessRenderNodes, renderNodesToImage, type RasterExportFormat } from './formats/raster'
 import { renderNodesToSVG } from './formats/svg'
 import { extractExportGraph, findPageId } from './subgraph'
@@ -192,6 +193,40 @@ export const figFormat: IOFormatAdapter = {
   }
 }
 
+export const figMakeFormat: IOFormatAdapter = {
+  id: 'figmake',
+  label: 'Figma Make Document',
+  role: 'native-document',
+  category: 'document',
+  extensions: ['fig'],
+  mimeTypes: ['application/octet-stream'],
+  support: {
+    readDocument: true
+  },
+  exportOptions: {
+    scale: false,
+    quality: false
+  },
+  matchesFile(fileName) {
+    return lowerExt(fileName) === 'fig'
+  },
+  async readDocument(input) {
+    const data = input.data.slice().buffer
+    try {
+      const graph = await parseFigMakeFile(data)
+      return { graph, sourceFormat: 'figmake' }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err)
+      if (msg.includes('Corrupted fig-make') || msg.includes('No nodes found')) {
+        throw err
+      }
+      // Fall back to standard fig parsing (includes invalid header → not a fig-make file)
+      const graph = await parseFigFile(data)
+      return { graph, sourceFormat: 'fig' }
+    }
+  }
+}
+
 export const penFormat: IOFormatAdapter = {
   id: 'pen',
   label: 'Pencil Document',
@@ -200,7 +235,8 @@ export const penFormat: IOFormatAdapter = {
   extensions: ['pen'],
   mimeTypes: ['application/json', 'text/plain'],
   support: {
-    readDocument: true
+    readDocument: true,
+    writeDocument: true
   },
   matchesFile(fileName, mimeType) {
     return lowerExt(fileName) === 'pen' || mimeType === 'application/json'
@@ -209,6 +245,16 @@ export const penFormat: IOFormatAdapter = {
     const text = new TextDecoder().decode(input.data)
     const graph = parsePenFile(text)
     return { graph, sourceFormat: 'pen' }
+  },
+  async writeDocument(graph) {
+    const data = exportPenFile(graph)
+    return {
+      format: 'pen',
+      mimeType: 'application/json',
+      extension: 'pen',
+      data,
+      encoding: 'utf8'
+    }
   }
 }
 
@@ -317,6 +363,7 @@ export const jsxFormat: IOFormatAdapter = {
 }
 
 export const BUILTIN_IO_FORMATS: IOFormatAdapter[] = [
+  figMakeFormat,
   figFormat,
   penFormat,
   pngFormat,

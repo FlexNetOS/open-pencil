@@ -124,6 +124,24 @@ export class SceneGraph {
     return count
   }
 
+  /**
+   * Detect cycles in the scene graph by following parent pointers or child pointers.
+   * Returns the list of node IDs forming the cycle, or null if the graph is acyclic.
+   */
+  detectCycles(): string[] | null {
+    for (const node of this.nodes.values()) {
+      const visited = new Set<string>()
+      let current: string | null = node.id
+      while (current) {
+        if (visited.has(current)) return [...visited, current]
+        visited.add(current)
+        const n = this.nodes.get(current)
+        current = n?.parentId ?? null
+      }
+    }
+    return null
+  }
+
   // --- Variables ---
 
   addVariable(variable: Variable): void {
@@ -267,6 +285,9 @@ export class SceneGraph {
   }
 
   createNode(type: NodeType, parentId: string, overrides: Partial<SceneNode> = {}): SceneNode {
+    if (overrides.id && this.nodes.has(overrides.id)) {
+      overrides = { ...overrides, id: undefined }
+    }
     const node = createDefaultNode(() => this.generateNodeId(), type, overrides)
     node.parentId = parentId
     this.nodes.set(node.id, node)

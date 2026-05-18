@@ -1,0 +1,50 @@
+{
+  "version": "1.0.0",
+  "children": [
+    {
+      "id": "0:4",
+      "type": "rectangle",
+      "name": "/",
+      "width": 1408,
+      "height": 1244,
+      "fill": "#ffffff0c",
+      "layout": "row",
+      "gap": 64,
+      "padding": [
+        100,
+        64,
+        64,
+        64
+      ],
+      "justifyContent": "start",
+      "alignItems": "start",
+      "children": [
+        {
+          "id": "0:5",
+          "type": "frame",
+          "name": "Desktop",
+          "x": 64,
+          "y": 100,
+          "width": 1280,
+          "height": 1080,
+          "fill": "#ffffff",
+          "layout": "column",
+          "justifyContent": "start",
+          "alignItems": "start",
+          "children": [
+            {
+              "id": "0:6",
+              "type": "rectangle",
+              "name": "App",
+              "width": 1280,
+              "height": 1080,
+              "layout": "row",
+              "justifyContent": "start",
+              "alignItems": "start"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

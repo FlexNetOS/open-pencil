@@ -385,6 +385,11 @@ Self-review checklist:
 - JSX-to-design renderer (`packages/render/`)
 - Design linter rules (`packages/linter/`)
 
+## Agent skills
+
+- `open-pencil` — general CLI and MCP usage (installed globally and in `.devin/skills/open-pencil/`)
+- `open-pencil-debug` — diagnosing crashes, parent cycles, layout stack overflows, and `.pen`/`.fig` round-trip corruption (`.devin/skills/open-pencil-debug/`). Use when OpenPencil crashes with `Maximum call stack size exceeded` or produces malformed node trees.
+
 ## Known issues
 
 - Safari ew-resize/col-resize/ns-resize cursor bug (WebKit #303845) — fixed in Safari 26.3 Beta

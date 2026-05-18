@@ -1,0 +1,3109 @@
+{
+  "version": "1.0.0",
+  "children": [
+    {
+      "id": "0:4",
+      "type": "rectangle",
+      "name": "/",
+      "width": 1408,
+      "height": 1244,
+      "fill": "#ffffff0c",
+      "layout": "row",
+      "gap": 64,
+      "padding": [
+        100,
+        64,
+        64,
+        64
+      ],
+      "justifyContent": "start",
+      "alignItems": "start",
+      "children": [
+        {
+          "id": "0:5",
+          "type": "frame",
+          "name": "Desktop",
+          "x": 64,
+          "y": 100,
+          "width": 1280,
+          "height": 1080,
+          "fill": "#ffffff",
+          "layout": "column",
+          "justifyContent": "start",
+          "alignItems": "start",
+          "children": [
+            {
+              "id": "0:6",
+              "type": "rectangle",
+              "name": "App",
+              "width": 1280,
+              "height": 1080,
+              "layout": "row",
+              "justifyContent": "start",
+              "alignItems": "start"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0:8",
+      "type": "rectangle",
+      "name": "Frame 760",
+      "x": 18343,
+      "y": 1,
+      "width": 1320,
+      "height": 1320,
+      "layout": "row",
+      "justifyContent": "start",
+      "alignItems": "start"
+    },
+    {
+      "id": "0:9",
+      "type": "frame",
+      "name": "Frame 760",
+      "x": 18343,
+      "y": 1,
+      "width": 1320,
+      "height": 1320,
+      "fill": "#1a1a1a",
+      "layout": "row",
+      "gap": 16,
+      "justifyContent": "center",
+      "alignItems": "center",
+      "children": [
+        {
+          "id": "0:10",
+          "type": "frame",
+          "name": "Background",
+          "width": 1320,
+          "height": 1320,
+          "fill": "#1a1a1a",
+          "layout": "column",
+          "gap": 13.199999809265137,
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "id": "0:11",
+              "type": "frame",
+              "name": "Footer Content",
+              "x": 39.599609375,
+              "y": 1194,
+              "width": 383.79998779296875,
+              "height": 86.4000015258789,
+              "layout": "column",
+              "padding": [
+                13.199999809265137,
+                13.199999809265137,
+                13.199999809265137,
+                13.199999809265137
+              ],
+              "justifyContent": "start",
+              "alignItems": "start",
+              "children": [
+                {
+                  "id": "0:12",
+                  "type": "frame",
+                  "name": "Brand Info",
+                  "x": 13.199999809265137,
+                  "y": 13.199999809265137,
+                  "width": 357.3999938964844,
+                  "height": 33,
+                  "layout": "row",
+                  "justifyContent": "start",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "id": "0:13",
+                      "type": "frame",
+                      "name": "Logo",
+                      "width": 33,
+                      "height": 33,
+                      "layout": "row",
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "id": "0:14",
+                          "type": "frame",
+                          "name": "Interfaces Logo",
+                          "width": 33,
+                          "height": 33,
+                          "rotation": -9.213866198408551e-15,
+                          "children": [
+                            {
+                              "id": "0:15",
+                              "type": "vector",
+                              "name": "Union",
+                              "x": 0.0006508827209437278,
+                              "y": 5.800047874450684,
+                              "width": 33,
+                              "height": 22,
+                              "fill": "#fafafa",
+                              "rotation": 9.213866198408551e-15,
+                              "cornerRadius": 0.33000001311302185
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "id": "0:16",
+                      "type": "frame",
+                      "name": "Content",
+                      "x": 33,
+                      "width": 324.3999938964844,
+                      "height": 33,
+                      "layout": "column",
+                      "gap": 13.199999809265137,
+                      "padding": [
+                        0,
+                        13.199999809265137,
+                        0,
+                        13.199999809265137
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "start",
+                      "children": [
+                        {
+                          "id": "0:17",
+                          "type": "text",
+                          "name": "Text content",
+                          "x": 13.199999809265137,
+                          "width": 298,
+                          "height": 33,
+                          "fill": "#fafafa",
+                          "content": "Interfaces Design System",
+                          "fontFamily": "Lexend",
+                          "fontSize": 23.100000381469727,
+                          "fontWeight": 600,
+                          "lineHeight": 33
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "0:18",
+                  "type": "frame",
+                  "name": "Link Info",
+                  "x": 13.199999809265137,
+                  "y": 46.20000076293945,
+                  "width": 237,
+                  "height": 27,
+                  "layout": "row",
+                  "gap": 13.199999809265137,
+                  "justifyContent": "start",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "id": "0:19",
+                      "type": "frame",
+                      "name": "Content",
+                      "width": 237,
+                      "height": 27,
+                      "layout": "column",
+                      "gap": 13.199999809265137,
+                      "justifyContent": "center",
+                      "alignItems": "start",
+                      "children": [
+                        {
+                          "id": "0:20",
+                          "type": "text",
+                          "name": "Text content",
+                          "width": 237,
+                          "height": 27,
+                          "fill": "#a3a3a3",
+                          "content": "https://interfaces.supply",
+                          "fontFamily": "Lexend",
+                          "fontSize": 19.799999237060547,
+                          "lineHeight": 26.399999618530273
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "0:21",
+          "type": "frame",
+          "name": "Sidebar",
+          "x": 500,
+          "y": 210,
+          "width": 320,
+          "height": 900,
+          "fill": "#000000",
+          "layout": "column",
+          "gap": 16,
+          "padding": [
+            16,
+            16,
+            16,
+            16
+          ],
+          "justifyContent": "start",
+          "alignItems": "start",
+          "children": [
+            {
+              "id": "0:22",
+              "type": "frame",
+              "name": "Branding",
+              "x": 16,
+              "y": 16,
+              "width": 288,
+              "height": 48,
+              "layout": "row",
+              "padding": [
+                4,
+                4,
+                4,
+                4
+              ],
+              "justifyContent": "start",
+              "alignItems": "center",
+              "children": [
+                {
+                  "id": "0:23",
+                  "type": "frame",
+                  "name": "Logo",
+                  "x": 4,
+                  "y": 4,
+                  "width": 32,
+                  "height": 40,
+                  "layout": "row",
+                  "padding": [
+                    8,
+                    8,
+                    8,
+                    8
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "id": "0:24",
+                      "type": "frame",
+                      "name": "Interfaces Logo",
+                      "x": 8,
+                      "y": 8,
+                      "width": 16,
+                      "height": 24,
+                      "rotation": -9.213866198408551e-15,
+                      "children": [
+                        {
+                          "id": "0:25",
+                          "type": "vector",
+                          "name": "Union",
+                          "x": -2.572996832007077e-15,
+                          "y": 4,
+                          "width": 24,
+                          "height": 16,
+                          "fill": "#fafafa",
+                          "rotation": 9.213866198408551e-15,
+                          "cornerRadius": 0.20000000298023224
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "0:26",
+                  "type": "frame",
+                  "name": "Content",
+                  "x": 36,
+                  "y": 8,
+                  "width": 100,
+                  "height": 32,
+                  "layout": "column",
+                  "gap": 8,
+                  "padding": [
+                    4,
+                    8,
+                    4,
+                    8
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "start",
+                  "children": [
+                    {
+                      "id": "0:27",
+                      "type": "text",
+                      "name": "Text content",
+                      "x": 8,
+                      "y": 4,
+                      "width": 84,
+                      "height": 24,
+                      "fill": "#fafafa",
+                      "content": "Interfaces",
+                      "fontFamily": "Lexend",
+                      "fontSize": 16,
+                      "fontWeight": 600,
+                      "lineHeight": 24
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "0:28",
+              "type": "frame",
+              "name": "Container",
+              "x": 16,
+              "y": 80,
+              "width": 288,
+              "height": 40,
+              "layout": "column",
+              "padding": [
+                0,
+                4,
+                0,
+                4
+              ],
+              "justifyContent": "start",
+              "alignItems": "start",
+              "children": [
+                {
+                  "id": "0:29",
+                  "type": "frame",
+                  "name": "Search",
+                  "x": 4,
+                  "width": 280,
+                  "height": 40,
+                  "layout": "column",
+                  "gap": 8,
+                  "justifyContent": "start",
+                  "alignItems": "start",
+                  "children": [
+                    {
+                      "id": "0:30",
+                      "type": "frame",
+                      "name": "Input",
+                      "width": 280,
+                      "height": 40,
+                      "fill": "#000000",
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#262626",
+                        "join": "miter",
+                        "cap": "none"
+                      },
+                      "layout": "row",
+                      "padding": [
+                        0,
+                        4,
+                        0,
+                        4
+                      ],
+                      "justifyContent": "start",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "id": "0:31",
+                          "type": "frame",
+                          "name": "Icon Wrapper",
+                          "x": 4,
+                          "y": 4,
+                          "width": 32,
+                          "height": 32,
+                          "layout": "row",
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "id": "0:32",
+                              "type": "frame",
+                              "name": "Search",
+                              "x": 8,
+                              "y": 8,
+                              "width": 16,
+                              "height": 16,
+                              "children": [
+                                {
+                                  "id": "0:33",
+                                  "type": "vector",
+                                  "name": "Vector",
+                                  "x": 0.9823075532913208,
+                                  "y": 0.9823075532913208,
+                                  "width": 13.517696380615234,
+                                  "height": 13.517696380615234,
+                                  "fill": "#fafafa"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "id": "0:34",
+                          "type": "frame",
+                          "name": "Content",
+                          "x": 36,
+                          "y": 6,
+                          "width": 240,
+                          "height": 28,
+                          "layout": "column",
+                          "gap": 8,
+                          "padding": [
+                            4,
+                            8,
+                            4,
+                            0
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "start",
+                          "children": [
+                            {
+                              "id": "0:35",
+                              "type": "text",
+                              "name": "Text content",
+                              "y": 4,
+                              "width": 47,
+                              "height": 20,
+                              "fill": "#a3a3a3",
+                              "content": "Search",
+                              "fontFamily": "Lexend",
+                              "fontSize": 14,
+                              "lineHeight": 20
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "0:36",
+              "type": "frame",
+              "name": "Menu",
+              "x": 16,
+              "y": 136,
+              "width": 288,
+              "height": 675,
+              "layout": "column",
+              "gap": 16,
+              "justifyContent": "start",
+              "alignItems": "start",
+              "children": [
+                {
+                  "id": "0:37",
+                  "type": "frame",
+                  "name": "flex",
+                  "width": 288,
+                  "height": 184,
+                  "layout": "column",
+                  "justifyContent": "start",
+                  "alignItems": "start",
+                  "children": [
+                    {
+                      "id": "0:38",
+                      "type": "frame",
+                      "name": "Content",
+                      "width": 288,
+                      "height": 40,
+                      "layout": "column",
+                      "padding": [
+                        16,
+                        16,
+                        16,
+                        16
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "start",
+                      "children": [
+                        {
+                          "id": "0:39",
+                          "type": "text",
+                          "name": "Text content",
+                          "x": 16,
+                          "y": 10,
+                          "width": 84,
+                          "height": 20,
+                          "fill": "#a3a3a3",
+                          "content": "Text content",
+                          "fontFamily": "Lexend",
+                          "fontSize": 14,
+                          "lineHeight": 20
+                        }
+                      ]
+                    },
+                    {
+                      "id": "0:40",
+                      "type": "frame",
+                      "name": "Sidebar Item",
+                      "y": 40,
+                      "width": 288,
+                      "height": 48,
+                      "layout": "column",
+                      "padding": [
+                        4,
+                        4,
+                        4,
+                        4
+                      ],
+                      "justifyContent": "start",
+                      "alignItems": "start",
+                      "children": [
+                        {
+                          "id": "0:41",
+                          "type": "frame",
+                          "name": "Button",
+                          "x": 4,
+                          "y": 4,
+                          "width": 280,
+                          "height": 40,
+                          "fill": "#171717",
+                          "layout": "row",
+                          "padding": [
+                            0,
+                            8,
+                            0,
+                            8
+                          ],
+                          "justifyContent": "start",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "id": "0:42",
+                              "type": "frame",
+                              "name": "Icon Wrapper",
+                              "x": 8,
+                              "y": 12,
+                              "width": 24,
+                              "height": 16,
+                              "layout": "row",
+                              "padding": [
+                                0,
+                                8,
+                                0,
+                                8
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "id": "0:43",
+                                  "type": "frame",
+                                  "name": "Cube",
+                                  "x": 4,
+                                  "width": 16,
+                                  "height": 16,
+                                  "children": [
+                                    {
+                                      "id": "0:44",
+                                      "type": "vector",
+                                      "name": "Vector",
+                                      "x": 1.5,
+                                      "y": 0.4999619722366333,
+                                      "width": 13,
+                                      "height": 15.000038146972656,
+                                      "fill": "#fafafa"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "id": "0:45",
+                              "type": "frame",
+                              "name": "Content",
+                              "x": 32,
+                              "y": 6,
+                              "width": 100,
+                              "height": 28,
+                              "layout": "column",
+                              "gap": 8,
+                              "padding": [
+                                4,
+                                8,
+                                4,
+                                8
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "start",
+                              "children": [
+                                {
+                                  "id": "0:46",
+                                  "type": "text",
+                                  "name": "Text content",
+                                  "x": 8,
+                                  "y": 4,
+                                  "width": 84,
+                                  "height": 20,
+                                  "fill": "#fafafa",
+                                  "content": "Text content",
+                                  "fontFamily": "Lexend",
+                                  "fontSize": 14,
+                                  "lineHeight": 20
+                                }
+                              ]
+                            },
+                            {
+                              "id": "0:47",
+                              "type": "frame",
+                              "name": "Icon Wrapper",
+                              "width": 24,
+                              "height": 32,
+                              "enabled": false,
+                              "layout": "row",
+                              "padding": [
+                                0,
+                                8,
+                                0,
+                                0
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "id": "0:48",
+                                  "type": "frame",
+                                  "name": "Cube",
+                                  "y": 8,
+                                  "width": 16,
+                                  "height": 16,
+                                  "children": [
+                                    {
+                                      "id": "0:49",
+                                      "type": "vector",
+                                      "name": "Vector",
+                                      "x": 1.5,
+                                      "y": 0.4999619722366333,
+                                      "width": 13,
+                                      "height": 15.000038146972656,
+                                      "fill": "#fafafa"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "id": "0:50",
+                      "type": "frame",
+                      "name": "Sidebar Item",
+                      "y": 88,
+                      "width": 288,
+                      "height": 48,
+                      "layout": "column",
+                      "padding": [
+                        4,
+                        4,
+                        4,
+                        4
+                      ],
+                      "justifyContent": "start",
+                      "alignItems": "start",
+                      "children": [
+                        {
+                          "id": "0:51",
+                          "type": "frame",
+                          "name": "Button",
+                          "x": 4,
+                          "y": 4,
+                          "width": 280,
+                          "height": 40,
+                          "layout": "row",
+                          "padding": [
+                            0,
+                            8,
+                            0,
+                            8
+                          ],
+                          "justifyContent": "start",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "id": "0:52",
+                              "type": "frame",
+                              "name": "Icon Wrapper",
+                              "x": 8,
+                              "y": 12,
+                              "width": 24,
+                              "height": 16,
+                              "layout": "row",
+                              "padding": [
+                                0,
+                                8,
+                                0,
+                                8
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "id": "0:53",
+                                  "type": "frame",
+                                  "name": "Cube",
+                                  "x": 4,
+                                  "width": 16,
+                                  "height": 16,
+                                  "children": [
+                                    {
+                                      "id": "0:54",
+                                      "type": "vector",
+                                      "name": "Vector",
+                                      "x": 1.5,
+                                      "y": 0.4999619722366333,
+                                      "width": 13,
+                                      "height": 15.000038146972656,
+                                      "fill": "#fafafa"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "id": "0:55",
+                              "type": "frame",
+                              "name": "Content",
+                              "x": 32,
+                              "y": 6,
+                              "width": 100,
+                              "height": 28,
+                              "layout": "column",
+                              "gap": 8,
+                              "padding": [
+                                4,
+                                8,
+                                4,
+                                8
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "start",
+                              "children": [
+                                {
+                                  "id": "0:56",
+                                  "type": "text",
+                                  "name": "Text content",
+                                  "x": 8,
+                                  "y": 4,
+                                  "width": 84,
+                                  "height": 20,
+                                  "fill": "#fafafa",
+                                  "content": "Text content",
+                                  "fontFamily": "Lexend",
+                                  "fontSize": 14,
+                                  "lineHeight": 20
+                                }
+                              ]
+                            },
+                            {
+                              "id": "0:57",
+                              "type": "frame",
+                              "name": "Icon Wrapper",
+                              "width": 24,
+                              "height": 32,
+                              "enabled": false,
+                              "layout": "row",
+                              "padding": [
+                                0,
+                                8,
+                                0,
+                                0
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "id": "0:58",
+                                  "type": "frame",
+                                  "name": "Cube",
+                                  "y": 8,
+                                  "width": 16,
+                                  "height": 16,
+                                  "children": [
+                                    {
+                                      "id": "0:59",
+                                      "type": "vector",
+                                      "name": "Vector",
+                                      "x": 1.5,
+                                      "y": 0.4999619722366333,
+                                      "width": 13,
+                                      "height": 15.000038146972656,
+                                      "fill": "#fafafa"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "id": "0:60",
+                      "type": "frame",
+                      "name": "Sidebar Item",
+                      "y": 136,
+                      "width": 288,
+                      "height": 48,
+                      "layout": "column",
+                      "padding": [
+                        4,
+                        4,
+                        4,
+                        4
+                      ],
+                      "justifyContent": "start",
+                      "alignItems": "start",
+                      "children": [
+                        {
+                          "id": "0:61",
+                          "type": "frame",
+                          "name": "Button",
+                          "x": 4,
+                          "y": 4,
+                          "width": 280,
+                          "height": 40,
+                          "layout": "row",
+                          "padding": [
+                            0,
+                            8,
+                            0,
+                            8
+                          ],
+                          "justifyContent": "start",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "id": "0:62",
+                              "type": "frame",
+                              "name": "Icon Wrapper",
+                              "x": 8,
+                              "y": 12,
+                              "width": 24,
+                              "height": 16,
+                              "layout": "row",
+                              "padding": [
+                                0,
+                                8,
+                                0,
+                                8
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "id": "0:63",
+                                  "type": "frame",
+                                  "name": "Cube",
+                                  "x": 4,
+                                  "width": 16,
+                                  "height": 16,
+                                  "children": [
+                                    {
+                                      "id": "0:64",
+                                      "type": "vector",
+                                      "name": "Vector",
+                                      "x": 1.5,
+                                      "y": 0.4999619722366333,
+                                      "width": 13,
+                                      "height": 15.000038146972656,
+                                      "fill": "#fafafa"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "id": "0:65",
+                              "type": "frame",
+                              "name": "Content",
+                              "x": 32,
+                              "y": 6,
+                              "width": 100,
+                              "height": 28,
+                              "layout": "column",
+                              "gap": 8,
+                              "padding": [
+                                4,
+                                8,
+                                4,
+                                8
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "start",
+                              "children": [
+                                {
+                                  "id": "0:66",
+                                  "type": "text",
+                                  "name": "Text content",
+                                  "x": 8,
+                                  "y": 4,
+                                  "width": 84,
+                                  "height": 20,
+                                  "fill": "#fafafa",
+                                  "content": "Text content",
+                                  "fontFamily": "Lexend",
+                                  "fontSize": 14,
+                                  "lineHeight": 20
+                                }
+                              ]
+                            },
+                            {
+                              "id": "0:67",
+                              "type": "frame",
+                              "name": "Icon Wrapper",
+                              "width": 24,
+                              "height": 32,
+                              "enabled": false,
+                              "layout": "row",
+                              "padding": [
+                                0,
+                                8,
+                                0,
+                                0
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "id": "0:68",
+                                  "type": "frame",
+                                  "name": "Cube",
+                                  "y": 8,
+                                  "width": 16,
+                                  "height": 16,
+                                  "children": [
+                                    {
+                                      "id": "0:69",
+                                      "type": "vector",
+                                      "name": "Vector",
+                                      "x": 1.5,
+                                      "y": 0.4999619722366333,
+                                      "width": 13,
+                                      "height": 15.000038146972656,
+                                      "fill": "#fafafa"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "0:70",
+                  "type": "frame",
+                  "name": "flex",
+                  "y": 200,
+                  "width": 288,
+                  "height": 184,
+                  "layout": "column",
+                  "justifyContent": "start",
+                  "alignItems": "start",
+                  "children": [
+                    {
+                      "id": "0:71",
+                      "type": "frame",
+                      "name": "Content",
+                      "width": 288,
+                      "height": 40,
+                      "layout": "column",
+                      "padding": [
+                        16,
+                        16,
+                        16,
+                        16
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "start",
+                      "children": [
+                        {
+                          "id": "0:72",
+                          "type": "text",
+                          "name": "Text content",
+                          "x": 16,
+                          "y": 10,
+                          "width": 84,
+                          "height": 20,
+                          "fill": "#a3a3a3",
+                          "content": "Text content",
+                          "fontFamily": "Lexend",
+                          "fontSize": 14,
+                          "lineHeight": 20
+                        }
+                      ]
+                    },
+                    {
+                      "id": "0:73",
+                      "type": "frame",
+                      "name": "Sidebar Item",
+                      "y": 40,
+                      "width": 288,
+                      "height": 48,
+                      "layout": "column",
+                      "padding": [
+                        4,
+                        4,
+                        4,
+                        4
+                      ],
+                      "justifyContent": "start",
+                      "alignItems": "start",
+                      "children": [
+                        {
+                          "id": "0:74",
+                          "type": "frame",
+                          "name": "Button",
+                          "x": 4,
+                          "y": 4,
+                          "width": 280,
+                          "height": 40,
+                          "layout": "row",
+                          "padding": [
+                            0,
+                            8,
+                            0,
+                            8
+                          ],
+                          "justifyContent": "start",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "id": "0:75",
+                              "type": "frame",
+                              "name": "Icon Wrapper",
+                              "x": 8,
+                              "y": 12,
+                              "width": 24,
+                              "height": 16,
+                              "layout": "row",
+                              "padding": [
+                                0,
+                                8,
+                                0,
+                                8
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "id": "0:76",
+                                  "type": "frame",
+                                  "name": "Cube",
+                                  "x": 4,
+                                  "width": 16,
+                                  "height": 16,
+                                  "children": [
+                                    {
+                                      "id": "0:77",
+                                      "type": "vector",
+                                      "name": "Vector",
+                                      "x": 1.5,
+                                      "y": 0.4999619722366333,
+                                      "width": 13,
+                                      "height": 15.000038146972656,
+                                      "fill": "#fafafa"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "id": "0:78",
+                              "type": "frame",
+                              "name": "Content",
+                              "x": 32,
+                              "y": 6,
+                              "width": 216,
+                              "height": 28,
+                              "layout": "column",
+                              "gap": 8,
+                              "padding": [
+                                4,
+                                8,
+                                4,
+                                8
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "start",
+                              "children": [
+                                {
+                                  "id": "0:79",
+                                  "type": "text",
+                                  "name": "Text content",
+                                  "x": 8,
+                                  "y": 4,
+                                  "width": 84,
+                                  "height": 20,
+                                  "fill": "#fafafa",
+                                  "content": "Text content",
+                                  "fontFamily": "Lexend",
+                                  "fontSize": 14,
+                                  "lineHeight": 20
+                                }
+                              ]
+                            },
+                            {
+                              "id": "0:80",
+                              "type": "frame",
+                              "name": "Icon Wrapper",
+                              "x": 248,
+                              "y": 4,
+                              "width": 24,
+                              "height": 32,
+                              "layout": "row",
+                              "padding": [
+                                0,
+                                8,
+                                0,
+                                0
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "id": "0:81",
+                                  "type": "frame",
+                                  "name": "Chevron-down",
+                                  "y": 8,
+                                  "width": 16,
+                                  "height": 16,
+                                  "children": [
+                                    {
+                                      "id": "0:82",
+                                      "type": "vector",
+                                      "name": "Vector",
+                                      "x": 3,
+                                      "y": 5.300012588500977,
+                                      "width": 10,
+                                      "height": 5.699999809265137,
+                                      "fill": "#fafafa"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "id": "0:83",
+                      "type": "frame",
+                      "name": "Sidebar Item",
+                      "y": 88,
+                      "width": 288,
+                      "height": 48,
+                      "layout": "column",
+                      "padding": [
+                        4,
+                        4,
+                        4,
+                        4
+                      ],
+                      "justifyContent": "start",
+                      "alignItems": "start",
+                      "children": [
+                        {
+                          "id": "0:84",
+                          "type": "frame",
+                          "name": "Button",
+                          "x": 4,
+                          "y": 4,
+                          "width": 280,
+                          "height": 40,
+                          "layout": "row",
+                          "padding": [
+                            0,
+                            8,
+                            0,
+                            8
+                          ],
+                          "justifyContent": "start",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "id": "0:85",
+                              "type": "frame",
+                              "name": "Icon Wrapper",
+                              "x": 8,
+                              "y": 12,
+                              "width": 24,
+                              "height": 16,
+                              "layout": "row",
+                              "padding": [
+                                0,
+                                8,
+                                0,
+                                8
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "id": "0:86",
+                                  "type": "frame",
+                                  "name": "Cube",
+                                  "x": 4,
+                                  "width": 16,
+                                  "height": 16,
+                                  "children": [
+                                    {
+                                      "id": "0:87",
+                                      "type": "vector",
+                                      "name": "Vector",
+                                      "x": 1.5,
+                                      "y": 0.4999619722366333,
+                                      "width": 13,
+                                      "height": 15.000038146972656,
+                                      "fill": "#fafafa"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "id": "0:88",
+                              "type": "frame",
+                              "name": "Content",
+                              "x": 32,
+                              "y": 6,
+                              "width": 216,
+                              "height": 28,
+                              "layout": "column",
+                              "gap": 8,
+                              "padding": [
+                                4,
+                                8,
+                                4,
+                                8
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "start",
+                              "children": [
+                                {
+                                  "id": "0:89",
+                                  "type": "text",
+                                  "name": "Text content",
+                                  "x": 8,
+                                  "y": 4,
+                                  "width": 84,
+                                  "height": 20,
+                                  "fill": "#fafafa",
+                                  "content": "Text content",
+                                  "fontFamily": "Lexend",
+                                  "fontSize": 14,
+                                  "lineHeight": 20
+                                }
+                              ]
+                            },
+                            {
+                              "id": "0:90",
+                              "type": "frame",
+                              "name": "Icon Wrapper",
+                              "x": 248,
+                              "y": 4,
+                              "width": 24,
+                              "height": 32,
+                              "layout": "row",
+                              "padding": [
+                                0,
+                                8,
+                                0,
+                                0
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "id": "0:91",
+                                  "type": "frame",
+                                  "name": "Chevron-down",
+                                  "y": 8,
+                                  "width": 16,
+                                  "height": 16,
+                                  "children": [
+                                    {
+                                      "id": "0:92",
+                                      "type": "vector",
+                                      "name": "Vector",
+                                      "x": 3,
+                                      "y": 5.300012588500977,
+                                      "width": 10,
+                                      "height": 5.699999809265137,
+                                      "fill": "#fafafa"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "id": "0:93",
+                      "type": "frame",
+                      "name": "Sidebar Item",
+                      "y": 136,
+                      "width": 288,
+                      "height": 48,
+                      "layout": "column",
+                      "padding": [
+                        4,
+                        4,
+                        4,
+                        4
+                      ],
+                      "justifyContent": "start",
+                      "alignItems": "start",
+                      "children": [
+                        {
+                          "id": "0:94",
+                          "type": "frame",
+                          "name": "Button",
+                          "x": 4,
+                          "y": 4,
+                          "width": 280,
+                          "height": 40,
+                          "layout": "row",
+                          "padding": [
+                            0,
+                            8,
+                            0,
+                            8
+                          ],
+                          "justifyContent": "start",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "id": "0:95",
+                              "type": "frame",
+                              "name": "Icon Wrapper",
+                              "x": 8,
+                              "y": 12,
+                              "width": 24,
+                              "height": 16,
+                              "layout": "row",
+                              "padding": [
+                                0,
+                                8,
+                                0,
+                                8
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "id": "0:96",
+                                  "type": "frame",
+                                  "name": "Cube",
+                                  "x": 4,
+                                  "width": 16,
+                                  "height": 16,
+                                  "children": [
+                                    {
+                                      "id": "0:97",
+                                      "type": "vector",
+                                      "name": "Vector",
+                                      "x": 1.5,
+                                      "y": 0.4999619722366333,
+                                      "width": 13,
+                                      "height": 15.000038146972656,
+                                      "fill": "#fafafa"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "id": "0:98",
+                              "type": "frame",
+                              "name": "Content",
+                              "x": 32,
+                              "y": 6,
+                              "width": 216,
+                              "height": 28,
+                              "layout": "column",
+                              "gap": 8,
+                              "padding": [
+                                4,
+                                8,
+                                4,
+                                8
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "start",
+                              "children": [
+                                {
+                                  "id": "0:99",
+                                  "type": "text",
+                                  "name": "Text content",
+                                  "x": 8,
+                                  "y": 4,
+                                  "width": 84,
+                                  "height": 20,
+                                  "fill": "#fafafa",
+                                  "content": "Text content",
+                                  "fontFamily": "Lexend",
+                                  "fontSize": 14,
+                                  "lineHeight": 20
+                                }
+                              ]
+                            },
+                            {
+                              "id": "0:100",
+                              "type": "frame",
+                              "name": "Icon Wrapper",
+                              "x": 248,
+                              "y": 4,
+                              "width": 24,
+                              "height": 32,
+                              "layout": "row",
+                              "padding": [
+                                0,
+                                8,
+                                0,
+                                0
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "id": "0:101",
+                                  "type": "frame",
+                                  "name": "Chevron-down",
+                                  "y": 8,
+                                  "width": 16,
+                                  "height": 16,
+                                  "children": [
+                                    {
+                                      "id": "0:102",
+                                      "type": "vector",
+                                      "name": "Vector",
+                                      "x": 3,
+                                      "y": 5.300012588500977,
+                                      "width": 10,
+                                      "height": 5.699999809265137,
+                                      "fill": "#fafafa"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "0:103",
+                  "type": "frame",
+                  "name": "flex",
+                  "y": 400,
+                  "width": 288,
+                  "height": 184,
+                  "layout": "column",
+                  "justifyContent": "start",
+                  "alignItems": "start",
+                  "children": [
+                    {
+                      "id": "0:104",
+                      "type": "frame",
+                      "name": "Content",
+                      "width": 288,
+                      "height": 40,
+                      "layout": "column",
+                      "padding": [
+                        16,
+                        16,
+                        16,
+                        16
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "start",
+                      "children": [
+                        {
+                          "id": "0:105",
+                          "type": "text",
+                          "name": "Text content",
+                          "x": 16,
+                          "y": 10,
+                          "width": 84,
+                          "height": 20,
+                          "fill": "#a3a3a3",
+                          "content": "Text content",
+                          "fontFamily": "Lexend",
+                          "fontSize": 14,
+                          "lineHeight": 20
+                        }
+                      ]
+                    },
+                    {
+                      "id": "0:106",
+                      "type": "frame",
+                      "name": "Sidebar Item",
+                      "y": 40,
+                      "width": 288,
+                      "height": 48,
+                      "layout": "column",
+                      "padding": [
+                        4,
+                        4,
+                        4,
+                        4
+                      ],
+                      "justifyContent": "start",
+                      "alignItems": "start",
+                      "children": [
+                        {
+                          "id": "0:107",
+                          "type": "frame",
+                          "name": "Button",
+                          "x": 4,
+                          "y": 4,
+                          "width": 280,
+                          "height": 40,
+                          "layout": "row",
+                          "padding": [
+                            0,
+                            8,
+                            0,
+                            8
+                          ],
+                          "justifyContent": "start",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "id": "0:108",
+                              "type": "frame",
+                              "name": "Icon Wrapper",
+                              "x": 8,
+                              "y": 12,
+                              "width": 24,
+                              "height": 16,
+                              "layout": "row",
+                              "padding": [
+                                0,
+                                8,
+                                0,
+                                8
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "id": "0:109",
+                                  "type": "frame",
+                                  "name": "Cube",
+                                  "x": 4,
+                                  "width": 16,
+                                  "height": 16,
+                                  "children": [
+                                    {
+                                      "id": "0:110",
+                                      "type": "vector",
+                                      "name": "Vector",
+                                      "x": 1.5,
+                                      "y": 0.4999619722366333,
+                                      "width": 13,
+                                      "height": 15.000038146972656,
+                                      "fill": "#fafafa"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "id": "0:111",
+                              "type": "frame",
+                              "name": "Content",
+                              "x": 32,
+                              "y": 6,
+                              "width": 216,
+                              "height": 28,
+                              "layout": "column",
+                              "gap": 8,
+                              "padding": [
+                                4,
+                                8,
+                                4,
+                                8
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "start",
+                              "children": [
+                                {
+                                  "id": "0:112",
+                                  "type": "text",
+                                  "name": "Text content",
+                                  "x": 8,
+                                  "y": 4,
+                                  "width": 84,
+                                  "height": 20,
+                                  "fill": "#fafafa",
+                                  "content": "Text content",
+                                  "fontFamily": "Lexend",
+                                  "fontSize": 14,
+                                  "lineHeight": 20
+                                }
+                              ]
+                            },
+                            {
+                              "id": "0:113",
+                              "type": "frame",
+                              "name": "Icon Wrapper",
+                              "x": 248,
+                              "y": 4,
+                              "width": 24,
+                              "height": 32,
+                              "layout": "row",
+                              "padding": [
+                                0,
+                                8,
+                                0,
+                                0
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "id": "0:114",
+                                  "type": "frame",
+                                  "name": "Chevron-down",
+                                  "y": 8,
+                                  "width": 16,
+                                  "height": 16,
+                                  "children": [
+                                    {
+                                      "id": "0:115",
+                                      "type": "vector",
+                                      "name": "Vector",
+                                      "x": 3,
+                                      "y": 5.300012588500977,
+                                      "width": 10,
+                                      "height": 5.699999809265137,
+                                      "fill": "#fafafa"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "id": "0:116",
+                      "type": "frame",
+                      "name": "Sidebar Item",
+                      "y": 88,
+                      "width": 288,
+                      "height": 48,
+                      "layout": "column",
+                      "padding": [
+                        4,
+                        4,
+                        4,
+                        4
+                      ],
+                      "justifyContent": "start",
+                      "alignItems": "start",
+                      "children": [
+                        {
+                          "id": "0:117",
+                          "type": "frame",
+                          "name": "Button",
+                          "x": 4,
+                          "y": 4,
+                          "width": 280,
+                          "height": 40,
+                          "layout": "row",
+                          "padding": [
+                            0,
+                            8,
+                            0,
+                            8
+                          ],
+                          "justifyContent": "start",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "id": "0:118",
+                              "type": "frame",
+                              "name": "Icon Wrapper",
+                              "x": 8,
+                              "y": 12,
+                              "width": 24,
+                              "height": 16,
+                              "layout": "row",
+                              "padding": [
+                                0,
+                                8,
+                                0,
+                                8
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "id": "0:119",
+                                  "type": "frame",
+                                  "name": "Cube",
+                                  "x": 4,
+                                  "width": 16,
+                                  "height": 16,
+                                  "children": [
+                                    {
+                                      "id": "0:120",
+                                      "type": "vector",
+                                      "name": "Vector",
+                                      "x": 1.5,
+                                      "y": 0.4999619722366333,
+                                      "width": 13,
+                                      "height": 15.000038146972656,
+                                      "fill": "#fafafa"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "id": "0:121",
+                              "type": "frame",
+                              "name": "Content",
+                              "x": 32,
+                              "y": 6,
+                              "width": 216,
+                              "height": 28,
+                              "layout": "column",
+                              "gap": 8,
+                              "padding": [
+                                4,
+                                8,
+                                4,
+                                8
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "start",
+                              "children": [
+                                {
+                                  "id": "0:122",
+                                  "type": "text",
+                                  "name": "Text content",
+                                  "x": 8,
+                                  "y": 4,
+                                  "width": 84,
+                                  "height": 20,
+                                  "fill": "#fafafa",
+                                  "content": "Text content",
+                                  "fontFamily": "Lexend",
+                                  "fontSize": 14,
+                                  "lineHeight": 20
+                                }
+                              ]
+                            },
+                            {
+                              "id": "0:123",
+                              "type": "frame",
+                              "name": "Icon Wrapper",
+                              "x": 248,
+                              "y": 4,
+                              "width": 24,
+                              "height": 32,
+                              "layout": "row",
+                              "padding": [
+                                0,
+                                8,
+                                0,
+                                0
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "id": "0:124",
+                                  "type": "frame",
+                                  "name": "Chevron-down",
+                                  "y": 8,
+                                  "width": 16,
+                                  "height": 16,
+                                  "children": [
+                                    {
+                                      "id": "0:125",
+                                      "type": "vector",
+                                      "name": "Vector",
+                                      "x": 3,
+                                      "y": 5.300012588500977,
+                                      "width": 10,
+                                      "height": 5.699999809265137,
+                                      "fill": "#fafafa"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "id": "0:126",
+                      "type": "frame",
+                      "name": "Sidebar Item",
+                      "y": 136,
+                      "width": 288,
+                      "height": 48,
+                      "layout": "column",
+                      "padding": [
+                        4,
+                        4,
+                        4,
+                        4
+                      ],
+                      "justifyContent": "start",
+                      "alignItems": "start",
+                      "children": [
+                        {
+                          "id": "0:127",
+                          "type": "frame",
+                          "name": "Button",
+                          "x": 4,
+                          "y": 4,
+                          "width": 280,
+                          "height": 40,
+                          "layout": "row",
+                          "padding": [
+                            0,
+                            8,
+                            0,
+                            8
+                          ],
+                          "justifyContent": "start",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "id": "0:128",
+                              "type": "frame",
+                              "name": "Icon Wrapper",
+                              "x": 8,
+                              "y": 12,
+                              "width": 24,
+                              "height": 16,
+                              "layout": "row",
+                              "padding": [
+                                0,
+                                8,
+                                0,
+                                8
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "id": "0:129",
+                                  "type": "frame",
+                                  "name": "Cube",
+                                  "x": 4,
+                                  "width": 16,
+                                  "height": 16,
+                                  "children": [
+                                    {
+                                      "id": "0:130",
+                                      "type": "vector",
+                                      "name": "Vector",
+                                      "x": 1.5,
+                                      "y": 0.4999619722366333,
+                                      "width": 13,
+                                      "height": 15.000038146972656,
+                                      "fill": "#fafafa"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "id": "0:131",
+                              "type": "frame",
+                              "name": "Content",
+                              "x": 32,
+                              "y": 6,
+                              "width": 216,
+                              "height": 28,
+                              "layout": "column",
+                              "gap": 8,
+                              "padding": [
+                                4,
+                                8,
+                                4,
+                                8
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "start",
+                              "children": [
+                                {
+                                  "id": "0:132",
+                                  "type": "text",
+                                  "name": "Text content",
+                                  "x": 8,
+                                  "y": 4,
+                                  "width": 84,
+                                  "height": 20,
+                                  "fill": "#fafafa",
+                                  "content": "Text content",
+                                  "fontFamily": "Lexend",
+                                  "fontSize": 14,
+                                  "lineHeight": 20
+                                }
+                              ]
+                            },
+                            {
+                              "id": "0:133",
+                              "type": "frame",
+                              "name": "Icon Wrapper",
+                              "x": 248,
+                              "y": 4,
+                              "width": 24,
+                              "height": 32,
+                              "layout": "row",
+                              "padding": [
+                                0,
+                                8,
+                                0,
+                                0
+                              ],
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "id": "0:134",
+                                  "type": "frame",
+                                  "name": "Chevron-down",
+                                  "y": 8,
+                                  "width": 16,
+                                  "height": 16,
+                                  "children": [
+                                    {
+                                      "id": "0:135",
+                                      "type": "vector",
+                                      "name": "Vector",
+                                      "x": 3,
+                                      "y": 5.300012588500977,
+                                      "width": 10,
+                                      "height": 5.699999809265137,
+                                      "fill": "#fafafa"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "0:136",
+              "type": "frame",
+              "name": "Settings",
+              "x": 16,
+              "y": 827,
+              "width": 288,
+              "height": 57,
+              "layout": "column",
+              "gap": 8,
+              "justifyContent": "end",
+              "alignItems": "start",
+              "children": [
+                {
+                  "id": "0:137",
+                  "type": "frame",
+                  "name": "Divider",
+                  "width": 288,
+                  "height": 1,
+                  "layout": "column",
+                  "padding": [
+                    0,
+                    8,
+                    0,
+                    8
+                  ],
+                  "justifyContent": "start",
+                  "alignItems": "start",
+                  "children": [
+                    {
+                      "id": "0:138",
+                      "type": "frame",
+                      "name": "Rect",
+                      "x": 8,
+                      "width": 272,
+                      "height": 1,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#262626",
+                        "join": "miter",
+                        "cap": "none"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "0:139",
+                  "type": "frame",
+                  "name": "flex",
+                  "y": 9,
+                  "width": 288,
+                  "height": 48,
+                  "layout": "row",
+                  "padding": [
+                    8,
+                    12,
+                    8,
+                    8
+                  ],
+                  "justifyContent": "start",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "id": "0:140",
+                      "type": "frame",
+                      "name": "Avatar",
+                      "x": 8,
+                      "y": 8,
+                      "width": 32,
+                      "height": 32,
+                      "fill": "#000000",
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#262626",
+                        "join": "miter",
+                        "cap": "none"
+                      },
+                      "layout": "row",
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "id": "0:141",
+                          "type": "frame",
+                          "name": "Icon Wrapper",
+                          "width": 32,
+                          "height": 32,
+                          "layout": "row",
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "id": "0:142",
+                              "type": "frame",
+                              "name": "User",
+                              "x": 8,
+                              "y": 8,
+                              "width": 16,
+                              "height": 16,
+                              "children": [
+                                {
+                                  "id": "0:143",
+                                  "type": "vector",
+                                  "name": "Vector",
+                                  "x": 3,
+                                  "y": 1,
+                                  "width": 10,
+                                  "height": 14,
+                                  "fill": "#fafafa"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "id": "0:144",
+                      "type": "frame",
+                      "name": "Content",
+                      "x": 40,
+                      "y": 10,
+                      "width": 204,
+                      "height": 28,
+                      "layout": "column",
+                      "gap": 8,
+                      "padding": [
+                        4,
+                        8,
+                        4,
+                        8
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "start",
+                      "children": [
+                        {
+                          "id": "0:145",
+                          "type": "text",
+                          "name": "Text content",
+                          "x": 8,
+                          "y": 4,
+                          "width": 84,
+                          "height": 20,
+                          "fill": "#fafafa",
+                          "content": "Text content",
+                          "fontFamily": "Lexend",
+                          "fontSize": 14,
+                          "lineHeight": 20
+                        }
+                      ]
+                    },
+                    {
+                      "id": "0:146",
+                      "type": "frame",
+                      "name": "Icon Button",
+                      "x": 244,
+                      "y": 8,
+                      "width": 32,
+                      "height": 32,
+                      "layout": "row",
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "id": "0:147",
+                          "type": "frame",
+                          "name": "Icon Wrapper",
+                          "width": 32,
+                          "height": 32,
+                          "layout": "row",
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "id": "0:148",
+                              "type": "frame",
+                              "name": "Overflow-menu-horizontal",
+                              "x": 8,
+                              "y": 8,
+                              "width": 16,
+                              "height": 16,
+                              "children": [
+                                {
+                                  "id": "0:149",
+                                  "type": "vector",
+                                  "name": "Vector",
+                                  "x": 3,
+                                  "y": 7,
+                                  "width": 10,
+                                  "height": 2,
+                                  "fill": "#fafafa"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "0:150",
+      "type": "rectangle",
+      "name": "RECTANGLE",
+      "width": 100,
+      "height": 100,
+      "enabled": false
+    },
+    {
+      "id": "0:151",
+      "type": "rectangle",
+      "name": "App.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:152",
+      "type": "rectangle",
+      "name": "App",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:153",
+      "type": "text",
+      "name": "Text",
+      "width": 14,
+      "height": 13,
+      "fill": "#000000",
+      "content": "Ag",
+      "fontFamily": "Lexend",
+      "fontSize": 10,
+      "fontWeight": 600,
+      "lineHeight": 10
+    },
+    {
+      "id": "0:154",
+      "type": "text",
+      "name": "Text",
+      "width": 14,
+      "height": 13,
+      "fill": "#000000",
+      "content": "Ag",
+      "fontFamily": "Lexend",
+      "fontSize": 10,
+      "lineHeight": 10
+    },
+    {
+      "id": "0:155",
+      "type": "rectangle",
+      "name": "breadcrumb.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:156",
+      "type": "rectangle",
+      "name": "breadcrumb.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:157",
+      "type": "rectangle",
+      "name": "tabs.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:158",
+      "type": "rectangle",
+      "name": "tabs.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:159",
+      "type": "rectangle",
+      "name": "separator.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:160",
+      "type": "rectangle",
+      "name": "separator.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:161",
+      "type": "rectangle",
+      "name": "hover-card.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:162",
+      "type": "rectangle",
+      "name": "hover-card.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:163",
+      "type": "rectangle",
+      "name": "calendar.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:164",
+      "type": "rectangle",
+      "name": "calendar.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:165",
+      "type": "rectangle",
+      "name": "dialog.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:166",
+      "type": "rectangle",
+      "name": "dialog.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:167",
+      "type": "rectangle",
+      "name": "carousel.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:168",
+      "type": "rectangle",
+      "name": "carousel.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:169",
+      "type": "rectangle",
+      "name": "resizable.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:170",
+      "type": "rectangle",
+      "name": "resizable.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:171",
+      "type": "rectangle",
+      "name": "label.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:172",
+      "type": "rectangle",
+      "name": "label.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:173",
+      "type": "rectangle",
+      "name": "pagination.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:174",
+      "type": "rectangle",
+      "name": "pagination.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:175",
+      "type": "rectangle",
+      "name": "progress.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:176",
+      "type": "rectangle",
+      "name": "progress.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:177",
+      "type": "rectangle",
+      "name": "aspect-ratio.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:178",
+      "type": "rectangle",
+      "name": "aspect-ratio.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:179",
+      "type": "rectangle",
+      "name": "popover.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:180",
+      "type": "rectangle",
+      "name": "popover.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:181",
+      "type": "rectangle",
+      "name": "toggle.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:182",
+      "type": "rectangle",
+      "name": "toggle.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:183",
+      "type": "rectangle",
+      "name": "form.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:184",
+      "type": "rectangle",
+      "name": "form.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:185",
+      "type": "rectangle",
+      "name": "toggle-group.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:186",
+      "type": "rectangle",
+      "name": "toggle-group.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:187",
+      "type": "rectangle",
+      "name": "switch.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:188",
+      "type": "rectangle",
+      "name": "switch.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:189",
+      "type": "rectangle",
+      "name": "navigation-menu.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:190",
+      "type": "rectangle",
+      "name": "navigation-menu.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:191",
+      "type": "rectangle",
+      "name": "sheet.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:192",
+      "type": "rectangle",
+      "name": "sheet.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:193",
+      "type": "rectangle",
+      "name": "accordion.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:194",
+      "type": "rectangle",
+      "name": "accordion.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:195",
+      "type": "rectangle",
+      "name": "Attributions.md",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:196",
+      "type": "rectangle",
+      "name": "Attributions.md 4",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:197",
+      "type": "rectangle",
+      "name": "chart.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:198",
+      "type": "rectangle",
+      "name": "chart.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:199",
+      "type": "rectangle",
+      "name": "tooltip.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:200",
+      "type": "rectangle",
+      "name": "tooltip.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:201",
+      "type": "rectangle",
+      "name": "ImageWithFallback.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:202",
+      "type": "rectangle",
+      "name": "ImageWithFallback.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:203",
+      "type": "rectangle",
+      "name": "SidebarDemo.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:204",
+      "type": "rectangle",
+      "name": "SidebarDemo.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:205",
+      "type": "rectangle",
+      "name": "avatar.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:206",
+      "type": "rectangle",
+      "name": "avatar.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:207",
+      "type": "rectangle",
+      "name": "table.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:208",
+      "type": "rectangle",
+      "name": "table.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:209",
+      "type": "rectangle",
+      "name": "skeleton.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:210",
+      "type": "rectangle",
+      "name": "skeleton.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:211",
+      "type": "rectangle",
+      "name": "sidebar.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:212",
+      "type": "rectangle",
+      "name": "sidebar.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:213",
+      "type": "rectangle",
+      "name": "card.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:214",
+      "type": "rectangle",
+      "name": "card.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:215",
+      "type": "rectangle",
+      "name": "checkbox.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:216",
+      "type": "rectangle",
+      "name": "checkbox.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:217",
+      "type": "rectangle",
+      "name": "input.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:218",
+      "type": "rectangle",
+      "name": "input.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:219",
+      "type": "rectangle",
+      "name": "menubar.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:220",
+      "type": "rectangle",
+      "name": "menubar.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:221",
+      "type": "rectangle",
+      "name": "scroll-area.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:222",
+      "type": "rectangle",
+      "name": "scroll-area.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:223",
+      "type": "rectangle",
+      "name": "radio-group.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:224",
+      "type": "rectangle",
+      "name": "radio-group.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:225",
+      "type": "rectangle",
+      "name": "slider.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:226",
+      "type": "rectangle",
+      "name": "slider.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:227",
+      "type": "rectangle",
+      "name": "Guidelines.md",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:228",
+      "type": "rectangle",
+      "name": "Guidelines.md 3",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:229",
+      "type": "rectangle",
+      "name": "use-mobile.ts",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:230",
+      "type": "rectangle",
+      "name": "use-mobile.ts 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:231",
+      "type": "rectangle",
+      "name": "context-menu.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:232",
+      "type": "rectangle",
+      "name": "context-menu.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:233",
+      "type": "rectangle",
+      "name": "drawer.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:234",
+      "type": "rectangle",
+      "name": "drawer.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:235",
+      "type": "rectangle",
+      "name": "globals.css",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:236",
+      "type": "rectangle",
+      "name": "globals.css 3",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:237",
+      "type": "rectangle",
+      "name": "dropdown-menu.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:238",
+      "type": "rectangle",
+      "name": "dropdown-menu.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:239",
+      "type": "rectangle",
+      "name": "textarea.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:240",
+      "type": "rectangle",
+      "name": "textarea.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:241",
+      "type": "rectangle",
+      "name": "svg-svkvdgwod6.ts",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:242",
+      "type": "rectangle",
+      "name": "svg-svkvdgwod6.ts 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:243",
+      "type": "rectangle",
+      "name": "alert-dialog.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:244",
+      "type": "rectangle",
+      "name": "alert-dialog.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:245",
+      "type": "rectangle",
+      "name": "collapsible.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:246",
+      "type": "rectangle",
+      "name": "collapsible.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:247",
+      "type": "rectangle",
+      "name": "badge.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:248",
+      "type": "rectangle",
+      "name": "badge.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:249",
+      "type": "rectangle",
+      "name": "utils.ts",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:250",
+      "type": "rectangle",
+      "name": "utils.ts 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:251",
+      "type": "rectangle",
+      "name": "command.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:252",
+      "type": "rectangle",
+      "name": "command.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:253",
+      "type": "rectangle",
+      "name": "input-otp.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:254",
+      "type": "rectangle",
+      "name": "input-otp.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:255",
+      "type": "rectangle",
+      "name": "sonner.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:256",
+      "type": "rectangle",
+      "name": "sonner.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:257",
+      "type": "rectangle",
+      "name": "button.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:258",
+      "type": "rectangle",
+      "name": "button.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:259",
+      "type": "rectangle",
+      "name": "alert.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:260",
+      "type": "rectangle",
+      "name": "alert.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:261",
+      "type": "rectangle",
+      "name": "Frame760.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:262",
+      "type": "rectangle",
+      "name": "Frame760.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:263",
+      "type": "rectangle",
+      "name": "select.tsx",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:264",
+      "type": "rectangle",
+      "name": "select.tsx 1",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:265",
+      "type": "rectangle",
+      "name": "package.json",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:266",
+      "type": "rectangle",
+      "name": "vite.config.ts",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:267",
+      "type": "rectangle",
+      "name": "postcss.config.mjs",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:268",
+      "type": "rectangle",
+      "name": "index.css",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:269",
+      "type": "rectangle",
+      "name": "default_theme.css",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:270",
+      "type": "rectangle",
+      "name": "pnpm-lock.yaml",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:271",
+      "type": "rectangle",
+      "name": "ATTRIBUTIONS.md",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:272",
+      "type": "rectangle",
+      "name": ".npmrc",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:273",
+      "type": "rectangle",
+      "name": "default_shadcn_theme.css",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "id": "0:274",
+      "type": "rectangle",
+      "name": "pnpm-workspace.yaml",
+      "width": 100,
+      "height": 100
+    }
+  ]
+}

@@ -1,5 +1,4 @@
-import { readFigFile } from '@open-pencil/core/io/formats/fig'
-
+import { readDesignFile } from '@/app/document/io/read-design-file'
 import { isTauri } from '@/app/tauri/env'
 
 export type ReloadSourceOptions = {
@@ -18,12 +17,12 @@ export async function readReloadSource({
     const bytes = await tauriRead(filePath)
     const blob = new Blob([bytes])
     const file = new File([blob], `${documentName}.fig`)
-    return readFigFile(file, { populate: 'first-page' })
+    return (await readDesignFile(file)).graph
   }
 
   if (fileHandle) {
     const file = await fileHandle.getFile()
-    return readFigFile(file, { populate: 'first-page' })
+    return (await readDesignFile(file)).graph
   }
 
   return null

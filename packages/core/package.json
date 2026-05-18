@@ -93,6 +93,11 @@
       "bun": "./src/io/formats/pen/index.ts",
       "default": "./src/io/formats/pen/index.ts"
     },
+    "./io/formats/figmake": {
+      "types": "./src/io/formats/figmake/index.ts",
+      "bun": "./src/io/formats/figmake/index.ts",
+      "default": "./src/io/formats/figmake/index.ts"
+    },
     "./io/formats/jsx": {
       "types": "./src/io/formats/jsx/index.ts",
       "bun": "./src/io/formats/jsx/index.ts",

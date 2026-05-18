@@ -3,8 +3,20 @@ import { openFileFromPath } from '@/app/shell/menu/use'
 import { createTab, openFileInNewTab } from '@/app/tabs'
 import { isTauri } from '@/app/tauri/env'
 
-export async function handleSaveFile(store: EditorStore): Promise<unknown> {
+function optionalPath(args: unknown): string | undefined {
+  const path = (args as { path?: unknown } | null)?.path
+  return typeof path === 'string' && path.trim() ? path : undefined
+}
+
+export async function handleSaveFile(store: EditorStore, args?: unknown): Promise<unknown> {
+  const path = optionalPath(args)
+  if (path) {
+    if (!isTauri()) throw new Error('Saving to a path requires the desktop app')
+    store.setPlannedFilePath(path)
+    await ensureTauriParentDirectory(path)
+  }
   await store.saveFigFile()
+  if (path) store.startWatchingCurrentFile()
   return { ok: true }
 }
 
