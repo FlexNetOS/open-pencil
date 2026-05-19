@@ -418,13 +418,15 @@ export class SceneGraph {
         set.add(id)
       }
     }
-    if (
-      node.type === 'TEXT' &&
-      node.textPicture &&
-      Object.keys(changes).some((k) => SceneGraph.TEXT_PICTURE_KEYS.has(k))
-    ) {
-      node.textPicture = null
+    if (node.type === 'TEXT') {
+      const textChanged = Object.keys(changes).some((k) => SceneGraph.TEXT_PICTURE_KEYS.has(k))
+      if (node.textPicture && textChanged) node.textPicture = null
+      if (node.figmaDerivedTextGlyphs && 'text' in changes) node.figmaDerivedTextGlyphs = null
     }
+    const entries = Object.entries(changes) as Array<[string, unknown]>
+    changes = Object.fromEntries(
+      entries.filter(([, value]) => value !== undefined)
+    ) as Partial<SceneNode>
     if (changes.vectorNetwork) {
       changes = { ...changes, vectorNetwork: normalizeVectorNetwork(changes.vectorNetwork) }
     }
@@ -486,7 +488,7 @@ export class SceneGraph {
     let idx = insertIndex
     if (
       oldParent === newParent &&
-      idx > (oldParent.childIds.indexOf(nodeId) === -1 ? idx : oldParent.childIds.length)
+      idx > (!oldParent.childIds.includes(nodeId) ? idx : oldParent.childIds.length)
     ) {
       // Already removed above, no adjustment needed
     }
@@ -612,9 +614,7 @@ export class SceneGraph {
       const child = this.nodes.get(childId)
       if (!child) continue
       result.push({ node: child, depth })
-      if (child.childIds.length > 0) {
-        result.push(...this.flattenTree(childId, depth + 1))
-      }
+      if (child.childIds.length > 0) result.push(...this.flattenTree(childId, depth + 1))
     }
     return result
   }

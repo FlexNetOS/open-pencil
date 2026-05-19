@@ -1,33 +1,11 @@
-import { resolveOverrideTarget, repopulateInstance } from '#core/kiwi/instance-overrides/resolve'
+import { applyOverridePatch } from '#core/kiwi/instance-overrides/patches'
+import { resolveOverrideTarget } from '#core/kiwi/instance-overrides/resolve'
 import type { OverrideContext } from '#core/kiwi/instance-overrides/types'
-import { guidToString } from '#core/kiwi/node-change/convert'
-import type { SceneNode } from '#core/scene-graph'
 
-import { convertOverrideToProps } from './props'
+import { patchFromSymbolOverride } from './patches'
 
 function isActiveInstance(ctx: OverrideContext, nodeId: string | undefined): nodeId is string {
   return nodeId !== undefined && (!ctx.activeNodeIds || ctx.activeNodeIds.has(nodeId))
-}
-
-function preserveStrokeShapeProps(target: SceneNode, updates: Partial<SceneNode>): void {
-  if (!updates.strokes) return
-  updates.strokes = updates.strokes.map((stroke, index) => {
-    if (index >= target.strokes.length) {
-      return {
-        ...stroke,
-        cap: target.strokeCap,
-        join: target.strokeJoin,
-        dashPattern: target.dashPattern
-      }
-    }
-    const existing = target.strokes[index]
-    return {
-      ...stroke,
-      cap: existing.cap,
-      join: existing.join,
-      dashPattern: existing.dashPattern
-    }
-  })
 }
 
 /**
@@ -58,26 +36,10 @@ export function applySymbolOverrides(ctx: OverrideContext): Set<string> {
 
       if (targetId === nodeId && ctx.kiwiPropertyNodes.has(nodeId)) continue
 
+      const patch = patchFromSymbolOverride(ctx, targetId, ov)
+      if (!patch) continue
       overriddenNodes.add(targetId)
-
-      if (ov.overriddenSymbolID) {
-        const swapGuid = guidToString(ov.overriddenSymbolID)
-        const newCompId = ctx.guidToNodeId.get(swapGuid)
-        if (newCompId) {
-          repopulateInstance(ctx, targetId, newCompId)
-          ctx.swappedInstances.add(targetId)
-        }
-      }
-
-      const { guidPath: _, overriddenSymbolID: _s, componentPropAssignments: _c, ...fields } = ov
-      if (Object.keys(fields).length === 0) continue
-
-      const updates = convertOverrideToProps(fields as Record<string, unknown>)
-      if (Object.keys(updates).length > 0) {
-        const target = ctx.graph.getNode(targetId)
-        if (target) preserveStrokeShapeProps(target, updates)
-        ctx.graph.updateNode(targetId, updates)
-      }
+      applyOverridePatch(ctx, patch)
     }
   }
   return overriddenNodes

@@ -136,7 +136,7 @@ export function encodeMessage(message: FigmaMessage): Uint8Array {
   const ncHex = Buffer.from(ncBytes).toString('hex')
   const finalHex = beforeArray + ncHex + afterArray
 
-  const finalBytes = new Uint8Array(finalHex.match(/.{2}/g)?.map((b) => parseInt(b, 16)) ?? [])
+  const finalBytes = new Uint8Array(finalHex.match(/.{2}/g)?.map((b) => Number.parseInt(b, 16)) ?? [])
   return compress(finalBytes)
 }
 
@@ -195,7 +195,7 @@ export interface Paint {
   blendMode?: string
   stops?: { color: Color; position: number }[]
   transform?: Matrix
-  image?: { hash: string }
+  image?: { hash: string | Uint8Array }
   imageScaleMode?: string
   colorVariableBinding?: VariableBinding
   colorVar?: {
@@ -327,6 +327,7 @@ export interface NodeChange {
       endCharacter: number
       position: Vector
       width: number
+      lineY?: number
       lineHeight: number
       lineAscent: number
     }>
@@ -350,8 +351,19 @@ export interface NodeChange {
     truncationStartIndex?: number
     truncatedHeight?: number
   }
+  styleType?: string
+  styleIdForText?: { guid?: GUID }
+  styleIdForFill?: { guid?: GUID }
+  styleIdForStrokeFill?: { guid?: GUID }
   textUserLayoutVersion?: number
+  textExplicitLayoutVersion?: number
+  textBidiVersion?: number
   textDecoration?: string
+  textDecorationSkipInk?: boolean
+  fontVariantCommonLigatures?: boolean
+  fontVariantContextualLigatures?: boolean
+  fontVersion?: string
+  emojiImageSet?: string
   lineHeight?: { value: number; units: string }
   letterSpacing?: { value: number; units: string }
   // Symbol/Instance

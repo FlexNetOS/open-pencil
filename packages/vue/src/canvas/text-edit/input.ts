@@ -45,6 +45,11 @@ export function createTextEditInput(options: TextEditInputOptions) {
     const localY = cy - abs.y
     if (localX < 0 || localY < 0 || localX > editNode.width || localY > editNode.height) {
       editor.commitTextEdit()
+      const hit = hitTestInScope(cx, cy, true)
+      if (hit?.type === 'TEXT' && hit.id !== editNode.id) {
+        startTextEditingAt(hit, cx, cy)
+        return true
+      }
       return false
     }
     if (getClickCount() >= 3) {
@@ -94,12 +99,11 @@ export function createTextEditInput(options: TextEditInputOptions) {
       selectedNode && selectedId && editor.graph.isContainer(selectedId) && !selectedNode.locked
 
     if (canEnter) {
-      const useDeep = selectedNode.type === 'COMPONENT' || selectedNode.type === 'INSTANCE'
-      const hit = useDeep
-        ? getContainerDescendantHit(selectedId, cx, cy)
-        : hitTestInScope(cx, cy, false)
+      const hit = getContainerDescendantHit(selectedId, cx, cy)
       editor.enterContainer(selectedId)
-      if (hit) {
+      if (hit?.type === 'TEXT') {
+        startTextEditingAt(hit, cx, cy)
+      } else if (hit) {
         editor.select([hit.id])
       } else {
         editor.clearSelection()
@@ -113,7 +117,7 @@ export function createTextEditInput(options: TextEditInputOptions) {
 
     if (hit.type === 'TEXT') {
       const isTopLevelText = hit.parentId === editor.state.currentPageId
-      if (!isTopLevelText && !wasSelectedBeforeClickSequence(hit.id)) {
+      if (!isTopLevelText && selectedId !== hit.id && !wasSelectedBeforeClickSequence(hit.id)) {
         editor.select([hit.id])
         return
       }

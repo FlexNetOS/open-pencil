@@ -7,16 +7,13 @@ import { useEditorStore } from '@/app/editor/active-store'
 import { createSharedEditorMenuActions } from '@/app/shell/menu/editor-actions'
 import { APP_MENU_SCHEMA } from '@/app/shell/menu/schema'
 import type { AppMenuActionItem, AppMenuEntry, AppMenuGroupSchema } from '@/app/shell/menu/schema'
+import { appMenuShortcutLabel } from '@/app/shell/menu/shortcut'
 import { openFileDialog } from '@/app/shell/menu/use'
 import { useAppTheme } from '@/app/shell/theme'
 
 export interface AppMenuGroup {
   label: string
   items: MenuEntry[]
-}
-
-function shortcutLabel(shortcut: string | undefined, mod: string): string | undefined {
-  return shortcut?.replaceAll('MOD', mod)
 }
 
 function isVisible(entry: { target?: string }): boolean {
@@ -27,7 +24,7 @@ function isSeparator(entry: AppMenuEntry): entry is Extract<AppMenuEntry, { type
   return entry.type === 'separator'
 }
 
-export function useAppMenu(mod: string) {
+export function useAppMenu() {
   const store = useEditorStore()
   const { menuItem: commandMenuItem } = useEditorCommands()
   const { locale, availableLocales, localeLabels, setLocale } = useI18n()
@@ -55,6 +52,7 @@ export function useAppMenu(mod: string) {
     save: () => void store.saveFigFile(),
     'save-as': () => void store.saveFigFileAs(),
     'export-selection': () => exportSelection('png'),
+    cut: () => document.execCommand('cut'),
     'export-png': () => exportSelection('png'),
     'export-svg': () => exportSelection('svg'),
     'export-fig': () => exportSelection('fig'),
@@ -110,12 +108,12 @@ export function useAppMenu(mod: string) {
     }
 
     if (entry.command) {
-      return commandMenuItem(entry.command, shortcutLabel(entry.shortcut, mod))
+      return commandMenuItem(entry.command, appMenuShortcutLabel(entry.id))
     }
 
     return {
       label: entry.label,
-      shortcut: shortcutLabel(entry.shortcut, mod),
+      shortcut: appMenuShortcutLabel(entry.id),
       action: itemAction(entry),
       checked: checked(entry),
       onCheckedChange: onCheckedChange(entry),

@@ -1,3 +1,6 @@
+import { isNotNil } from 'es-toolkit/predicate'
+
+import { BLACK } from '#core/constants'
 import type { NodeChange, VariableDataValuesEntry, Color, GUID } from '#core/kiwi/binary/codec'
 import { populateAndApplyOverrides } from '#core/kiwi/instance-overrides'
 import type { InstanceNodeChange } from '#core/kiwi/instance-overrides'
@@ -8,6 +11,7 @@ import {
   setVariableColorResolver,
   VARIABLE_BINDING_FIELDS_INVERSE
 } from '#core/kiwi/node-change/convert'
+import { applyStyleRefsToFields } from '#core/kiwi/node-change/style-refs'
 import { SceneGraph } from '#core/scene-graph'
 import type { VariableType, VariableValue } from '#core/scene-graph'
 
@@ -164,7 +168,7 @@ function resolveVariableValue(
 function resolveDefaultValue(type: VariableType): VariableValue {
   if (type === 'BOOLEAN') return false
   if (type === 'STRING') return ''
-  if (type === 'COLOR') return { r: 0, g: 0, b: 0, a: 1 }
+  if (type === 'COLOR') return { ...BLACK }
   return 0
 }
 
@@ -348,6 +352,10 @@ function parseDocumentColorSpace(nodeChanges: NodeChange[]): 'srgb' | 'display-p
   return documentNode?.documentColorProfile === 'DISPLAY_P3' ? 'display-p3' : 'srgb'
 }
 
+function applyStyleRefs(changeMap: Map<string, NodeChange>): void {
+  for (const nc of changeMap.values()) applyStyleRefsToFields(changeMap, nc)
+}
+
 export interface FigImportOptions {
   populate?: 'all' | 'first-page'
 }
@@ -372,6 +380,7 @@ export function importNodeChanges(
   }
 
   const { changeMap, parentMap, childrenMap } = buildChangeMaps(nodeChanges)
+  applyStyleRefs(changeMap)
   const assetRefs = buildAssetRefMap(changeMap)
   setVariableColorResolver(buildVariableColorResolver(changeMap, assetRefs))
 
@@ -417,7 +426,7 @@ export function importNodeChanges(
   }
   const activeRootIds =
     options.populate === 'first-page'
-      ? [firstPageId, ...componentPageIds].filter(Boolean)
+      ? [firstPageId, ...componentPageIds].filter(isNotNil)
       : undefined
 
   populateAndApplyOverrides(

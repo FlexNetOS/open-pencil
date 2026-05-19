@@ -3,15 +3,9 @@ import { openFileFromPath } from '@/app/shell/menu/use'
 import { createTab, openFileInNewTab } from '@/app/tabs'
 import { isTauri } from '@/app/tauri/env'
 
-function optionalPath(args: unknown): string | undefined {
-  const path = (args as { path?: unknown } | null)?.path
-  return typeof path === 'string' && path.trim() ? path : undefined
-}
-
-export async function handleSaveFile(store: EditorStore, args?: unknown): Promise<unknown> {
-  const path = optionalPath(args)
+export async function handleSaveFile(store: EditorStore, args: unknown): Promise<unknown> {
+  const path = (args as { path?: string }).path
   if (path) {
-    if (!isTauri()) throw new Error('Saving to a path requires the desktop app')
     store.setPlannedFilePath(path)
     await ensureTauriParentDirectory(path)
   }
@@ -22,8 +16,12 @@ export async function handleSaveFile(store: EditorStore, args?: unknown): Promis
 
 export async function ensureTauriParentDirectory(path: string): Promise<void> {
   if (!isTauri()) return
-  const { mkdir } = await import('@tauri-apps/plugin-fs')
-  const dir = path.replace(/[\\/][^\\/]+$/, '')
+  const [{ dirname }, { mkdir }] = await Promise.all([
+    import('@tauri-apps/api/path'),
+    import('@tauri-apps/plugin-fs')
+  ])
+  const dir = await dirname(path)
+  if (dir === path) return
   await mkdir(dir, { recursive: true })
 }
 

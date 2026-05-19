@@ -165,6 +165,7 @@ export {
 export {
   FONT_WEIGHT_NAMES,
   FontManager,
+  chooseLocalFontMatch,
   fontManager,
   styleToWeight,
   weightToFigmaStyle,
@@ -176,6 +177,14 @@ export {
   type FontInfo,
   type LocalFontAccessState
 } from './text/fonts'
+export {
+  fontFaceFromFigmaFontName,
+  fontFaceRenderFamily,
+  normalizeFontStyleName,
+  parseFontStyle,
+  type FontFaceRef,
+  type ParsedFontStyle
+} from './text/face'
 export {
   ARABIC_LOCAL_FALLBACK_FAMILIES,
   ARABIC_REMOTE_FALLBACK_FAMILIES,
@@ -215,8 +224,7 @@ export {
   geometryBlobToPath,
   decodeVectorNetworkBlob,
   encodeVectorNetworkBlob,
-  buildStyleOverrideTable,
-  computeVectorBounds
+  buildStyleOverrideTable
 } from './vector'
 export {
   evalCubic,

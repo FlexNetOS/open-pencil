@@ -4,6 +4,7 @@ import { useEditorCommands, useI18n } from '@open-pencil/vue'
 import type { EditorCommandId } from '@open-pencil/vue'
 
 import { useEditorStore } from '@/app/editor/active-store'
+import { pasteClipboardToReplace } from '@/app/editor/clipboard/paste-to-replace'
 import { createSharedEditorMenuActions } from '@/app/shell/menu/editor-actions'
 import { importFileDialog, openFileDialog } from '@/app/shell/menu/files'
 import { useAppTheme } from '@/app/shell/theme'
@@ -24,6 +25,13 @@ const COMMAND_MENU_IDS = new Set<string>([
   'selection.createComponentSet',
   'selection.detachInstance',
   'selection.wrapInAutoLayout',
+  'selection.booleanUnion',
+  'selection.booleanSubtract',
+  'selection.booleanIntersect',
+  'selection.booleanExclude',
+  'selection.flatten',
+  'selection.outlineText',
+  'selection.outlineStroke',
   'selection.bringToFront',
   'selection.sendToBack',
   'view.zoom100',
@@ -34,7 +42,7 @@ const COMMAND_MENU_IDS = new Set<string>([
 export { importFileDialog, openFileDialog }
 export { openFileFromPath } from '@/app/shell/menu/files'
 
-function execBrowserCommand(command: 'copy' | 'paste'): void {
+function execBrowserCommand(command: 'copy' | 'cut' | 'paste'): void {
   document.execCommand(command)
 }
 
@@ -70,7 +78,9 @@ export function useMenu() {
       store.state.autosaveEnabled = !store.state.autosaveEnabled
     },
     copy: () => execBrowserCommand('copy'),
+    cut: () => execBrowserCommand('cut'),
     paste: () => execBrowserCommand('paste'),
+    'paste-to-replace': () => void pasteClipboardToReplace(store),
     'check-updates': () => void checkForAppUpdate({ messages: dialogs }),
     ...createSharedEditorMenuActions(setTheme)
   }

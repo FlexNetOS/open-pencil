@@ -15,9 +15,9 @@ import type { SceneGraph } from '#core/scene-graph'
 import { copyFills } from '#core/scene-graph/copy'
 
 import { applyConstraintScaling } from './constraints'
-import { applyDerivedSymbolData } from './dsd'
+import { applyDerivedSymbolData } from './derived-symbol-data'
 import { populateInstances } from './populate'
-import { applyComponentProperties } from './props'
+import { applyComponentProperties } from './component-props'
 import { preComputeRoots } from './resolve'
 import { applySymbolOverrides } from './symbol/overrides'
 import { propagateOverridesTransitively } from './sync'
@@ -133,6 +133,7 @@ function buildOverrideContext(
     preComputedRoot: new Map(),
     componentIdRoot: new Map(),
     swappedInstances: new Set(),
+    protectedFields: new Map(),
     kiwiPropertyNodes,
     geometryOverrideNodes,
     activeNodeIds
@@ -179,7 +180,8 @@ export function populateAndApplyOverrides(
     ctx.swappedInstances,
     ctx.componentIdRoot,
     undefined,
-    ctx.activeNodeIds
+    ctx.activeNodeIds,
+    ctx.protectedFields
   )
 
   const propModified = applyComponentProperties(ctx)
@@ -190,7 +192,8 @@ export function populateAndApplyOverrides(
       ctx.swappedInstances,
       ctx.componentIdRoot,
       overriddenNodes,
-      ctx.activeNodeIds
+      ctx.activeNodeIds,
+      ctx.protectedFields
     )
   }
 
@@ -205,7 +208,8 @@ export function populateAndApplyOverrides(
         ctx.swappedInstances,
         ctx.componentIdRoot,
         overriddenNodes,
-        ctx.activeNodeIds
+        ctx.activeNodeIds,
+        ctx.protectedFields
       )
     }
   }

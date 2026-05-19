@@ -1,12 +1,20 @@
-import type { Canvas, EmbindEnumEntity, Path } from 'canvaskit-wasm'
+import type { Canvas, Path } from 'canvaskit-wasm'
 
 import { DROP_HIGHLIGHT_ALPHA, DROP_HIGHLIGHT_STROKE, SECTION_CORNER_RADIUS } from '#core/constants'
 import type { SceneNode, SceneGraph, Fill } from '#core/scene-graph'
 import type { Color } from '#core/types'
 import { vectorNetworkToCenterlinePath } from '#core/vector'
 
-import { nodeHasRadius } from './shapes'
+import { renderBooleanOperation } from './boolean'
 import type { SkiaRenderer, RenderOverlays } from './renderer'
+import { nodeHasRadius } from './shapes'
+import {
+  drawDashedRRectWithSolidCorners,
+  drawStyledRRectStroke,
+  getStrokeCapEntity,
+  getStrokeJoinEntity
+} from './strokes'
+import { drawFigmaDerivedText } from './text-derived'
 
 function drawVisibleFills(
   r: SkiaRenderer,
@@ -35,7 +43,7 @@ function isCulled(r: SkiaRenderer, node: SceneNode, absX: number, absY: number):
   const bw = node.width
   const bh = node.height
   if (node.rotation !== 0) {
-    const diag = Math.sqrt(bw * bw + bh * bh)
+    const diag = Math.hypot(bw, bh)
     const cx = absX + bw / 2
     const cy = absY + bh / 2
     return (
@@ -58,7 +66,8 @@ function applyNodeTransforms(
   const rotation =
     overlays.rotationPreview?.nodeId === nodeId ? overlays.rotationPreview.angle : node.rotation
   if (rotation !== 0) {
-    canvas.rotate(rotation, node.width / 2, node.height / 2)
+    if (node.type === 'LINE') canvas.rotate(rotation, 0, 0)
+    else canvas.rotate(rotation, node.width / 2, node.height / 2)
   }
 
   if (node.flipX || node.flipY) {
@@ -79,6 +88,8 @@ function renderNodeContent(
     r.renderSection(canvas, node, graph)
   } else if (node.type === 'COMPONENT_SET') {
     r.renderComponentSet(canvas, node, graph)
+  } else if (node.type === 'BOOLEAN_OPERATION') {
+    renderBooleanOperation(r, canvas, node, graph)
   } else {
     r.renderShape(canvas, node, graph)
   }
@@ -103,6 +114,7 @@ function renderChildren(
   absX: number,
   absY: number
 ): void {
+  if (node.type === 'BOOLEAN_OPERATION') return
   const isClippableContainer =
     node.type === 'FRAME' || node.type === 'COMPONENT' || node.type === 'INSTANCE'
   if (isClippableContainer && node.clipsContent && node.childIds.length > 0) {
@@ -234,6 +246,19 @@ export function renderComponentSet(
 
   drawVisibleFills(r, node, graph, () => canvas.drawRRect(rrect, r.fillPaint))
 
+  const visibleStrokes = node.strokes.filter((stroke) => stroke.visible)
+  if (visibleStrokes.length > 0) {
+    forVisibleStrokes(r, node, graph, (stroke, color) => {
+      const dashPhase = stroke.dashPattern?.[1] ?? 0
+      if (stroke.dashPattern && stroke.dashPattern.length > 0) {
+        drawDashedRRectWithSolidCorners(r, canvas, node, stroke, color, 5, dashPhase)
+      } else {
+        drawStyledRRectStroke(r, canvas, rrect, node, stroke, color, dashPhase)
+      }
+    })
+    return
+  }
+
   r.auxStroke.setStrokeWidth(r.COMPONENT_SET_BORDER_WIDTH / r.zoom)
   r.auxStroke.setColor(r.compColor())
   r.auxStroke.setPathEffect(
@@ -278,33 +303,11 @@ export function renderShape(
  * Returns the child to use for shadow shape, or null to use the node itself.
  */
 function getShadowShapeChild(node: SceneNode, graph: SceneGraph): SceneNode | null {
-  if (node.fills.some((f) => f.visible)) return null
+  if (node.fills.some((f) => f.visible) || node.fillGeometry.length > 0) return null
   if (node.childIds.length === 0) return null
   const child = graph.getNode(node.childIds[0])
   if (!child?.visible) return null
   return child
-}
-
-function getCapEntity(r: SkiaRenderer, cap: string | undefined): EmbindEnumEntity {
-  switch (cap) {
-    case 'ROUND':
-      return r.ck.StrokeCap.Round
-    case 'SQUARE':
-      return r.ck.StrokeCap.Square
-    default:
-      return r.ck.StrokeCap.Butt
-  }
-}
-
-function getJoinEntity(r: SkiaRenderer, join: string | undefined): EmbindEnumEntity {
-  switch (join) {
-    case 'ROUND':
-      return r.ck.StrokeJoin.Round
-    case 'BEVEL':
-      return r.ck.StrokeJoin.Bevel
-    default:
-      return r.ck.StrokeJoin.Miter
-  }
 }
 
 function drawVectorStrokeGeometry(
@@ -370,8 +373,8 @@ function drawVectorPathStrokes(
     r.strokePaint.setColor(r.ck.Color4f(sc.r, sc.g, sc.b, sc.a))
     r.strokePaint.setAlphaf(stroke.opacity)
     r.strokePaint.setStrokeWidth(stroke.weight)
-    r.strokePaint.setStrokeCap(getCapEntity(r, stroke.cap ?? 'NONE'))
-    r.strokePaint.setStrokeJoin(getJoinEntity(r, stroke.join ?? 'MITER'))
+    r.strokePaint.setStrokeCap(getStrokeCapEntity(r, stroke.cap ?? 'NONE'))
+    r.strokePaint.setStrokeJoin(getStrokeJoinEntity(r, stroke.join ?? 'MITER'))
     r.strokePaint.setShader(null)
     const effect = r.ck.PathEffect.MakeDash(dash, 0)
     r.strokePaint.setPathEffect(effect)
@@ -383,8 +386,8 @@ function drawVectorPathStrokes(
   const strokeOpts = {
     width: stroke.weight,
     miter_limit: 4,
-    cap: getCapEntity(r, stroke.cap ?? 'NONE'),
-    join: getJoinEntity(r, stroke.join ?? 'MITER')
+    cap: getStrokeCapEntity(r, stroke.cap ?? 'NONE'),
+    join: getStrokeJoinEntity(r, stroke.join ?? 'MITER')
   }
   r.fillPaint.setColor(r.ck.Color4f(sc.r, sc.g, sc.b, sc.a))
   r.fillPaint.setAlphaf(stroke.opacity)
@@ -416,10 +419,10 @@ function drawRegularStroke(
   r.strokePaint.setAlphaf(stroke.opacity)
 
   if (stroke.cap) {
-    r.strokePaint.setStrokeCap(getCapEntity(r, stroke.cap))
+    r.strokePaint.setStrokeCap(getStrokeCapEntity(r, stroke.cap))
   }
   if (stroke.join) {
-    r.strokePaint.setStrokeJoin(getJoinEntity(r, stroke.join))
+    r.strokePaint.setStrokeJoin(getStrokeJoinEntity(r, stroke.join))
   }
   if (stroke.dashPattern && stroke.dashPattern.length > 0) {
     r.strokePaint.setPathEffect(r.ck.PathEffect.MakeDash(stroke.dashPattern, 0))
@@ -446,7 +449,7 @@ function drawNodeStroke(
   vectorPaths: Path[] | null,
   vectorStroke: Path[] | null
 ): void {
-  if (vectorStroke && stroke.align === 'CENTER' && node.cornerRadius === 0) {
+  if (!sg && vectorStroke && stroke.align === 'CENTER' && node.cornerRadius === 0) {
     const outlineKey = `${node.id}|${stroke.weight}|${stroke.cap ?? 'NONE'}|${stroke.join ?? 'MITER'}`
     drawVectorPathStrokes(r, canvas, vectorStroke, stroke, sc, outlineKey)
     return
@@ -457,7 +460,8 @@ function drawNodeStroke(
     return
   }
   if (stroke.align !== 'INSIDE') {
-    drawVectorStrokeGeometry(r, canvas, sg, sc, stroke.opacity)
+    if (node.type === 'VECTOR') drawVectorStrokeGeometry(r, canvas, sg, sc, stroke.opacity)
+    else drawRegularStroke(r, canvas, node, rect, hasRadius, stroke, sc)
     return
   }
 
@@ -553,15 +557,6 @@ export function renderText(r: SkiaRenderer, canvas: Canvas, node: SceneNode, fil
   }
 
   const paragraphY = 0
-  if (!r.isNodeFontLoaded(node)) {
-    canvas.restore()
-    return
-  }
-  if (isGradientFill(fill) && drawGradientText(r, canvas, node, paragraphY)) {
-    canvas.restore()
-    return
-  }
-
   if (node.textPicture) {
     const pic = r.ck.MakePicture(node.textPicture)
     if (pic) {
@@ -570,6 +565,19 @@ export function renderText(r: SkiaRenderer, canvas: Canvas, node: SceneNode, fil
       canvas.restore()
       return
     }
+  }
+  if (drawFigmaDerivedText(r, canvas, node)) {
+    canvas.restore()
+    return
+  }
+
+  if (!r.isNodeFontLoaded(node)) {
+    canvas.restore()
+    return
+  }
+  if (isGradientFill(fill) && drawGradientText(r, canvas, node, paragraphY)) {
+    canvas.restore()
+    return
   }
   if (r.fontsLoaded && r.fontProvider) {
     const paragraph = r.buildParagraph(node, r.fillPaint.getColor())

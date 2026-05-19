@@ -3,6 +3,7 @@ import { describe, test, expect } from 'bun:test'
 import type { CanvasKit, TypefaceFontProvider } from 'canvaskit-wasm'
 
 import {
+  chooseLocalFontMatch,
   fontManager,
   isVariableFont,
   normalizeFontFamily,
@@ -31,6 +32,8 @@ describe('styleToWeight', () => {
     expect(styleToWeight('Thin')).toBe(100)
     expect(styleToWeight('Medium')).toBe(500)
     expect(styleToWeight('SemiBold')).toBe(600)
+    expect(styleToWeight('Semi Bold')).toBe(600)
+    expect(styleToWeight('DemiBold')).toBe(600)
     expect(styleToWeight('ExtraBold')).toBe(800)
     expect(styleToWeight('Black')).toBe(900)
   })
@@ -38,6 +41,7 @@ describe('styleToWeight', () => {
   test('handles italic variants', () => {
     expect(styleToWeight('Bold Italic')).toBe(700)
     expect(styleToWeight('Light Italic')).toBe(300)
+    expect(styleToWeight('600 Italic')).toBe(600)
   })
 
   test('case insensitive', () => {
@@ -88,6 +92,24 @@ function createRecordingProvider() {
   return { provider, registrations }
 }
 
+describe('chooseLocalFontMatch', () => {
+  const fonts = [
+    { family: 'Inter', style: 'Italic' },
+    { family: 'Inter', style: 'Regular' },
+    { family: 'Inter', style: 'Semi Bold' },
+    { family: 'Inter', style: 'Bold Italic' }
+  ]
+
+  test('prefers parsed weight and slant over first family match', () => {
+    expect(chooseLocalFontMatch(fonts, 'Inter', 'SemiBold')?.style).toBe('Semi Bold')
+    expect(chooseLocalFontMatch(fonts, 'Inter', 'Regular')?.style).toBe('Regular')
+  })
+
+  test('does not substitute nearby weights for explicit style requests', () => {
+    expect(chooseLocalFontMatch(fonts, 'Inter', 'Bold')).toBeUndefined()
+  })
+})
+
 describe('FontManager loaded font cache', () => {
   test('marks and checks font', () => {
     const family = `TestFont_${Date.now()}`
@@ -124,6 +146,24 @@ describe('FontManager loaded font cache', () => {
     expect(manager.provider()).toBeNull()
   })
 
+  test('registers loaded faces under exact render families', () => {
+    const manager = new FontManager()
+    const recording = createRecordingProvider()
+
+    manager.attachProvider({} as CanvasKit, recording.provider)
+    manager.markLoaded('Inter', 'SemiBold', new ArrayBuffer(12))
+
+    const renderFamily = manager.renderFamily('Inter', 'SemiBold')
+
+    expect(renderFamily).toBe('__op_font__Inter__SemiBold')
+    expect(recording.registrations).toEqual([
+      { family: 'Inter', byteLength: 12 },
+      { family: '__op_font__Inter__SemiBold', byteLength: 12 }
+    ])
+    expect(manager.renderFamily('Inter', 'SemiBold')).toBe(renderFamily)
+    expect(recording.registrations).toHaveLength(2)
+  })
+
   test('loads downloaded cache before other sources', async () => {
     const manager = new FontManager()
     const recording = createRecordingProvider()
@@ -143,6 +183,25 @@ describe('FontManager loaded font cache', () => {
     await expect(manager.loadFont('DownloadedCache', 'Regular')).resolves.toBe(data)
     expect(recording.registrations).toEqual([{ family: 'DownloadedCache', byteLength: 16 }])
     expect(writes).toBe(0)
+  })
+
+  test('loads bundled Inter ExtraBold without network access', async () => {
+    const manager = new FontManager()
+    const recording = createRecordingProvider()
+    const originalFetch = globalThis.fetch
+    globalThis.fetch = (() => {
+      throw new Error('network disabled')
+    }) as typeof fetch
+
+    try {
+      manager.attachProvider({} as CanvasKit, recording.provider)
+      const data = await manager.loadFont('Inter', 'ExtraBold')
+
+      expect(data?.byteLength).toBeGreaterThan(0)
+      expect(recording.registrations).toEqual([{ family: 'Inter', byteLength: data?.byteLength }])
+    } finally {
+      globalThis.fetch = originalFetch
+    }
   })
 })
 

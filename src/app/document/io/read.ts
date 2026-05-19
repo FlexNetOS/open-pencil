@@ -1,8 +1,9 @@
 import type { Editor, EditorState } from '@open-pencil/core/editor'
+import { readFigFile } from '@open-pencil/core/io/formats/fig'
+import { computeAllLayouts } from '@open-pencil/core/layout'
 
 import { yieldToUI } from '@/app/document/io/browser'
 import { applyImportedDocument } from '@/app/document/io/imported-document'
-import { readDesignFile } from '@/app/document/io/read-design-file'
 import { readReloadSource } from '@/app/document/io/reload-source'
 import { captureReloadState, restoreReloadState } from '@/app/document/io/reload-state'
 import { toast } from '@/app/shell/ui'
@@ -44,11 +45,11 @@ export function createOpenActions({
     try {
       state.loading = true
       await yieldToUI()
-      const { graph: imported, sourceFormat } = await readDesignFile(file)
+      const imported = await readFigFile(file)
       await yieldToUI()
       await applyImportedDocument(editor, imported)
-      state.documentName = file.name.replace(/\.[^.]+$/i, '')
-      setDocumentSource(file.name, sourceFormat, handle, path)
+      state.documentName = file.name.replace(/\.fig$/i, '')
+      setDocumentSource(file.name, 'fig', handle, path)
       await fitCurrentPageToViewport()
       editor.requestRender()
     } catch (e) {
@@ -80,6 +81,7 @@ export function createReloadActions({
       fileHandle
     })
     if (!imported) return
+    computeAllLayouts(imported)
     editor.replaceGraph(imported)
 
     editor.undo.clear()

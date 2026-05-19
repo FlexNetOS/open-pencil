@@ -10,6 +10,19 @@ import {
 
 import { expectDefined } from '#tests/helpers/assert'
 
+function expectFigmaEditableTextDefaults(textNode: NonNullable<Awaited<ReturnType<typeof parseFigmaClipboard>>>['nodes'][number]) {
+  expect(textNode.textUserLayoutVersion).toBe(5)
+  expect(textNode.textExplicitLayoutVersion).toBe(1)
+  expect(textNode.textBidiVersion).toBe(1)
+  expect(textNode.textAutoResize).toBe('NONE')
+  expect(textNode.lineHeight).toEqual({ value: 100, units: 'PERCENT' })
+  expect(textNode.letterSpacing).toEqual({ value: 0, units: 'PIXELS' })
+  expect(textNode.fontVariantCommonLigatures).toBe(true)
+  expect(textNode.fontVariantContextualLigatures).toBe(true)
+  expect(textNode.textDecorationSkipInk).toBe(true)
+  expect(textNode.emojiImageSet).toBe('APPLE')
+}
+
 describe('buildFigmaClipboardHTML', () => {
   beforeAll(async () => {
     await initCodec()
@@ -56,9 +69,42 @@ describe('buildFigmaClipboardHTML', () => {
 
     const parsed = await parseFigmaClipboard(html)
     const textNode = parsed?.nodes.find((node) => node.type === 'TEXT')
-    expect(textNode?.textUserLayoutVersion).toBe(4)
-    expect(textNode?.derivedTextData?.glyphs).toBeDefined()
-    expect(textNode?.derivedTextData?.baselines?.length).toBeGreaterThan(0)
+    if (!textNode) throw new Error('Expected text node')
+    expectFigmaEditableTextDefaults(textNode)
+    expect(textNode.derivedTextData?.glyphs).toBeDefined()
+    expect(textNode.derivedTextData?.baselines?.length).toBeGreaterThan(0)
+    expect(textNode.derivedTextData?.logicalIndexToCharacterOffsetMap?.length).toBe(text.text.length + 1)
+    expect(textNode.derivedTextData?.derivedLines).toEqual([{ directionality: 'LTR' }])
+  })
+
+  it('encodes fallback derived text metrics when outline fonts are unavailable', async () => {
+    const graph = new SceneGraph()
+    const page = graph.getPages()[0]
+    graph.createNode('TEXT', page.id, {
+      name: 'Title',
+      x: 0,
+      y: 0,
+      width: 552,
+      height: 70,
+      text: 'Analytics Overview',
+      fontFamily: 'Missing Preview Font',
+      fontWeight: 700,
+      fontSize: 56,
+      lineHeight: 67,
+      textAutoResize: 'HEIGHT'
+    })
+
+    const html = await buildFigmaClipboardHTML(graph.getChildren(page.id), graph)
+    const parsed = await parseFigmaClipboard(html)
+    const textNode = parsed?.nodes.find((node) => node.type === 'TEXT')
+    const baseline = textNode?.derivedTextData?.baselines?.[0]
+
+    expect(textNode?.textUserLayoutVersion).toBe(5)
+    expect(textNode?.textAutoResize).toBe('NONE')
+    expect(textNode?.derivedTextData?.glyphs?.length).toBe('Analytics Overview'.length)
+    expect(baseline?.width).toBe(552)
+    expect(baseline?.lineHeight).toBe(67)
+    expect(textNode?.derivedTextData?.layoutSize).toEqual({ x: 552, y: 70 })
   })
 
   it('encodes auto-layout frames', async () => {

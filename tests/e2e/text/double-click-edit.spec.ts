@@ -3,6 +3,23 @@ import { expect, test, type Page } from '@playwright/test'
 import { CanvasHelper } from '#tests/helpers/canvas'
 import { getEditingTextId } from '#tests/helpers/store'
 
+async function addTwoTopLevelTexts(page: Page) {
+  return page.evaluate(() => {
+    const store = window.openPencil?.getStore?.()
+    if (!store) throw new Error('OpenPencil store not initialized')
+    store.state.zoom = 1
+    store.state.panX = 0
+    store.state.panY = 0
+    const first = store.createShape('TEXT', 200, 200, 150, 30)
+    const second = store.createShape('TEXT', 200, 250, 150, 30)
+    store.graph.updateNode(first, { text: 'First label', fontSize: 18 })
+    store.graph.updateNode(second, { text: 'Second label', fontSize: 18 })
+    store.select([first])
+    store.requestRender()
+    return { first, second }
+  })
+}
+
 async function addTopLevelText(page: Page) {
   return page.evaluate(() => {
     const store = window.openPencil?.getStore?.()
@@ -65,7 +82,23 @@ test('double-clicking top-level text enters text edit mode', async ({ page }) =>
   await expect.poll(() => getEditingTextId(page), { timeout: 3000 }).toBe(textId)
 })
 
-test('double-click drill selects nested text before editing it', async ({ page }) => {
+test('single-clicking another text switches text edit target', async ({ page }) => {
+  await page.goto('/')
+  const canvas = new CanvasHelper(page)
+  await canvas.waitForInit()
+  canvas.errors.length = 0
+  await canvas.clearCanvas()
+
+  const ids = await addTwoTopLevelTexts(page)
+  await canvas.waitForRender()
+  await canvas.dblclick(245, 215)
+  await expect.poll(() => getEditingTextId(page), { timeout: 3000 }).toBe(ids.first)
+
+  await canvas.click(250, 265)
+  await expect.poll(() => getEditingTextId(page), { timeout: 3000 }).toBe(ids.second)
+})
+
+test('double-click drill enters nested text edit mode', async ({ page }) => {
   await page.goto('/')
   const canvas = new CanvasHelper(page)
   await canvas.waitForInit()
@@ -77,7 +110,7 @@ test('double-click drill selects nested text before editing it', async ({ page }
 
   await canvas.dblclick(125, 125)
 
-  await expect.poll(() => getEditingTextId(page), { timeout: 1000 }).toBeNull()
+  await expect.poll(() => getEditingTextId(page), { timeout: 3000 }).toBe(ids.textId)
   await expect
     .poll(() =>
       page.evaluate(() => {
@@ -87,8 +120,4 @@ test('double-click drill selects nested text before editing it', async ({ page }
       })
     )
     .toEqual([ids.textId])
-
-  await page.waitForTimeout(600)
-  await canvas.dblclick(125, 125)
-  await expect.poll(() => getEditingTextId(page), { timeout: 3000 }).toBe(ids.textId)
 })

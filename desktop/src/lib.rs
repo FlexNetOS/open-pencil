@@ -2,6 +2,7 @@ mod fig_container;
 mod fonts;
 mod menu;
 mod menu_events;
+#[cfg(target_os = "macos")]
 mod window;
 
 use fig_container::build_fig_file;
@@ -14,6 +15,7 @@ use std::{
 };
 use tauri::{Emitter, Manager};
 use tauri_plugin_fs::FsExt;
+#[cfg(target_os = "macos")]
 use window::show_main_window;
 
 #[derive(Clone, serde::Serialize)]
@@ -133,14 +135,23 @@ pub fn run() {
         })
         .build(tauri::generate_context!())
         .expect("error while building tauri application")
-        .run(|app, event| match event {
+        .run(|_app, event| match event {
+            #[cfg(target_os = "macos")]
+            tauri::RunEvent::Opened { urls } => {
+                let paths = urls
+                    .into_iter()
+                    .filter_map(|url| url.to_file_path().ok())
+                    .filter_map(file_association_path)
+                    .collect();
+                queue_open_paths(_app, paths);
+            }
             #[cfg(target_os = "macos")]
             tauri::RunEvent::Reopen {
                 has_visible_windows,
                 ..
             } => {
                 if !has_visible_windows {
-                    show_main_window(app);
+                    show_main_window(_app);
                 }
             }
             _ => {}

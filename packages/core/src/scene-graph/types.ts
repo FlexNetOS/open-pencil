@@ -1,4 +1,4 @@
-import type { Color, Matrix, Vector } from '#core/types'
+import type { Color, Matrix, Rect, Vector } from '#core/types'
 
 export interface SceneGraphEvents {
   'node:created': (node: SceneNode) => void
@@ -64,6 +64,7 @@ export type NodeType =
   | 'STAR'
   | 'POLYGON'
   | 'VECTOR'
+  | 'BOOLEAN_OPERATION'
   | 'GROUP'
   | 'SECTION'
   | 'COMPONENT'
@@ -209,6 +210,13 @@ export interface PluginRelaunchDataEntry {
   isDeleted: boolean
 }
 
+export interface FigmaDerivedTextGlyph {
+  commandsBlob: Uint8Array
+  x: number
+  y: number
+  fontSize: number
+}
+
 export interface SymbolLink {
   uri: string
   displayName?: string
@@ -232,7 +240,7 @@ export interface SceneNode {
   width: number
   height: number
   rotation: number
-  figmaDerivedLayout: { x?: number; y?: number; width?: number; height?: number } | null
+  figmaDerivedLayout: Partial<Rect> | null
 
   fills: Fill[]
   strokes: Stroke[]
@@ -292,6 +300,7 @@ export interface SceneNode {
   layoutAlignSelf: LayoutAlignSelf
 
   vectorNetwork: VectorNetwork | null
+  booleanOperation?: 'UNION' | 'SUBTRACT' | 'INTERSECT' | 'EXCLUDE'
   fillGeometry: GeometryPath[]
   strokeGeometry: GeometryPath[]
 
@@ -361,6 +370,7 @@ export interface SceneNode {
   flipY: boolean
 
   textPicture: Uint8Array | null
+  figmaDerivedTextGlyphs: FigmaDerivedTextGlyph[] | null
 }
 
 export type ComponentPropertyType = 'VARIANT' | 'TEXT' | 'BOOLEAN' | 'INSTANCE_SWAP'

@@ -44,7 +44,7 @@ function variableValueToKiwi(
   }
   if (type === 'COLOR' && typeof value === 'object' && 'r' in value) {
     return {
-      value: { colorValue: safeColor(value as { r: number; g: number; b: number; a?: number }) },
+      value: { colorValue: safeColor(value) },
       dataType: 'COLOR',
       resolvedDataType: 'COLOR'
     }
@@ -209,7 +209,7 @@ export async function exportFigFile(
     if (page.internalOnly) canvasNc.internalOnly = true
     nodeChanges.push(canvasNc)
 
-    const children = graph.getChildren(page.id)
+    const children = graph.getChildren(page.id).filter((child) => !child.internalOnly)
     for (let i = 0; i < children.length; i++) {
       nodeChanges.push(
         ...sceneNodeToKiwi(
@@ -318,22 +318,11 @@ function compressViaWorker(
       worker.terminate()
     }
 
-    const imgCopies = imageEntries.map((e) => ({
-      name: e.name,
-      data: new Uint8Array(e.data)
-    }))
-
-    const transferables = [
-      schemaDeflated.buffer,
-      kiwiData.buffer,
-      thumbnailPng.buffer,
-      ...imgCopies.map((e) => e.data.buffer)
-    ]
-
-    worker.postMessage(
-      { schemaDeflated, kiwiData, thumbnailPng, metaJson, images: imgCopies },
-      transferables
-    )
+    // Do NOT use transferables here. toUint8Array() in ByteBuffer returns a view of the
+    // internal buffer, so transferring kiwiData.buffer or schemaDeflated.buffer detaches
+    // buffers that may be shared with other views, causing "already detached" errors on
+    // subsequent saves. Structured clone (the default) copies the data safely.
+    worker.postMessage({ schemaDeflated, kiwiData, thumbnailPng, metaJson, images: imageEntries })
   })
 }
 

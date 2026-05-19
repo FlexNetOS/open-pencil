@@ -95,10 +95,7 @@ const noInlineNamedTypes = {
         )
         if (!props || props.length < 2) return
 
-        const required = props.filter((m) => !m.optional)
-        if (required.length < 2) return
-
-        const shape = required
+        const shape = props
           .map((m) => {
             const typeNode = m.typeAnnotation?.typeAnnotation
             let typeName = 'unknown'
@@ -194,6 +191,56 @@ const noVueStyleBlocks = {
             node,
             message:
               'Vue components must not use <style> blocks. Use Tailwind utilities or global app.css tokens.'
+          })
+        }
+      }
+    }
+  }
+}
+
+const noNativeTitleAttributesInVue = {
+  meta: {
+    docs: {
+      description: 'Disallow native title attributes in Vue components — use Tip/Reka tooltip'
+    }
+  },
+  create(context) {
+    const file = normalizedFilename(context)
+    if (!file.endsWith('.vue')) return {}
+    if (!file.includes('/src/') && !file.includes('/packages/vue/src/')) return {}
+
+    return {
+      Program(node) {
+        const source = context.sourceCode.getText()
+        if (/\s:?title=/.test(source)) {
+          context.report({
+            node,
+            message: 'Use the shared tooltip UI instead of native title attributes.'
+          })
+        }
+      }
+    }
+  }
+}
+
+const noHardcodedTipLabelsInVue = {
+  meta: {
+    docs: {
+      description: 'Disallow hardcoded Tip labels — use localized i18n messages'
+    }
+  },
+  create(context) {
+    const file = normalizedFilename(context)
+    if (!file.endsWith('.vue')) return {}
+    if (!file.includes('/src/') && !file.includes('/packages/vue/src/')) return {}
+
+    return {
+      Program(node) {
+        const source = context.sourceCode.getText()
+        if (/<Tip\b[^>]*\slabel=["']/.test(source)) {
+          context.report({
+            node,
+            message: 'Use a localized binding for Tip labels, not a hardcoded string.'
           })
         }
       }
@@ -533,6 +580,44 @@ const noMathRandom = {
   }
 }
 
+function isNumericLiteral(node, value) {
+  return node?.type === 'Literal' && node.value === value
+}
+
+function colorObjectLiteral(node, color) {
+  if (node?.type !== 'ObjectExpression') return false
+  const props = new Map()
+  for (const prop of node.properties ?? []) {
+    if (prop.type !== 'Property') return false
+    const key = prop.key.type === 'Identifier' ? prop.key.name : prop.key.value
+    props.set(key, prop.value)
+  }
+  return Object.entries(color).every(([key, value]) => isNumericLiteral(props.get(key), value))
+}
+
+const noHardcodedColorConstants = {
+  meta: {
+    docs: {
+      description: 'Use named color constants instead of inline Color object literals for shared colors'
+    }
+  },
+  create(context) {
+    const file = normalizedFilename(context)
+    if (file.includes('/tests/') || file.endsWith('/packages/core/src/constants.ts')) return {}
+
+    return {
+      ObjectExpression(node) {
+        if (colorObjectLiteral(node, { r: 0, g: 0, b: 0, a: 1 })) {
+          context.report({ node, message: 'Use BLACK from constants instead of an inline black Color literal.' })
+        }
+        if (colorObjectLiteral(node, { r: 0, g: 0, b: 0, a: 0 })) {
+          context.report({ node, message: 'Use TRANSPARENT from constants instead of an inline transparent Color literal.' })
+        }
+      }
+    }
+  }
+}
+
 const noHandRolledColor = {
   meta: {
     docs: {
@@ -836,6 +921,7 @@ const noDirectStorageAccess = {
     const file = normalizedFilename(context)
     const allowedFiles = [
       '/src/app/ai/chat/storage.ts',
+      '/src/app/cache/index.ts',
       '/src/app/shell/layout-storage.ts',
       '/packages/vue/src/i18n/locale.ts'
     ]
@@ -1500,16 +1586,26 @@ const noTopLevelPrefixedTestFiles = createProgramFilenameRule({
 })
 
 const noSiblingDomainPrefixedFiles = createProgramFilenameRule({
-  description: 'Disallow files that repeat an existing sibling domain folder as a filename prefix',
+  description: 'Disallow files that repeat an existing sibling domain folder in the filename',
   check(file) {
-    const match = file.match(/^(.*\/)([^/]+)-[^/]+\.(?:test\.)?(?:spec\.)?(?:ts|tsx|vue)$/)
+    const match = file.match(/^(.*\/)([^/]+)\.(?:test\.)?(?:spec\.)?(?:ts|tsx|vue)$/)
     if (!match) return false
 
-    const [, dir, prefix] = match
-    if (!existsSync(`${dir}${prefix}`)) return false
+    const [, dir, name] = match
+    const parts = name.split('-')
+    if (parts.length < 2) return false
+
+    const prefix = parts[0]
+    const suffix = parts.at(-1)
+    const domain = existsSync(`${dir}${prefix}`)
+      ? prefix
+      : suffix && existsSync(`${dir}${suffix}`)
+        ? suffix
+        : null
+    if (!domain) return false
 
     const filename = file.slice(dir.length)
-    return `Move '${filename}' under the existing '${prefix}/' folder instead of repeating the domain as a filename prefix.`
+    return `Move '${filename}' under the existing '${domain}/' folder instead of repeating the domain in the filename.`
   }
 })
 
@@ -1533,6 +1629,8 @@ const plugin = {
     'no-inline-named-types': noInlineNamedTypes,
     'no-structuredclone-scene-arrays': noStructuredCloneSceneArrays,
     'no-vue-style-blocks': noVueStyleBlocks,
+    'no-native-title-attributes-in-vue': noNativeTitleAttributesInVue,
+    'no-hardcoded-tip-labels-in-vue': noHardcodedTipLabelsInVue,
     'no-raw-test-id-string-props': noRawTestIdStringProps,
     'no-dynamic-data-test-id-in-vue': noDynamicDataTestIdInVue,
     'no-test-id-helper-bind-in-vue': noTestIdHelperBindInVue,
@@ -1543,6 +1641,7 @@ const plugin = {
     'no-document-query-selector-in-vue': noDocumentQuerySelectorInVue,
     'no-direct-selection-tool-state-mutation': noDirectSelectionToolStateMutation,
     'no-math-random': noMathRandom,
+    'no-hardcoded-color-constants': noHardcodedColorConstants,
     'no-hand-rolled-color': noHandRolledColor,
     'no-raw-console-format': noRawConsoleFormat,
     'no-silent-catch': noSilentCatch,

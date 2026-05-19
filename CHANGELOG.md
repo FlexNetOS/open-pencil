@@ -2,6 +2,40 @@
 
 ## Unreleased
 
+## 0.12.2 — 2026-05-19
+
+### Added
+
+- Allow OpenRouter users to enter any model ID from provider settings with cached autocomplete suggestions for tool-capable models, while keeping the curated dropdown as the default when no custom model is set.
+
+### Changed
+
+- Use localized app tooltips instead of native browser titles across editor controls, panels, and menus.
+- Update Claude Code MCP setup documentation and the docs landing screenshot.
+- Ignore non-source Markdown files in the app dev watcher so documentation edits do not reload the running editor.
+
+### Fixes
+
+- Route Claude Code stdio MCP requests through the live OpenPencil app connection, including immediate disconnected errors when no document is connected.
+- Keep MCP disconnected guidance focused on starting OpenPencil and opening a document.
+- Improve agent-rendered JSX compatibility with Figma-style text, alignment, and rotation aliases; strip HTML comments; and report unsupported props from render tools.
+- Load exact text font styles after MCP and AI tool mutations so newly created bold/weighted text renders immediately.
+- Include text style fields in MCP `get_node` output so agents can verify generated text accurately.
+- Keep provider settings tooltip/popover composition working in WebKit.
+
+## 0.12.1 — 2026-05-19
+
+### Fixes
+
+- Fix `.fig` round-trips for OpenPencil component sets and variable bindings, and recompute imported layouts after opening documents.
+- Report desktop/MCP package version mismatches explicitly and include package-manager-aware install guidance from the MCP server.
+- Support scoped MCP `save_file({ path })` workflows while keeping file saving in the desktop app.
+- Use native Tauri path handling for save parent directories so Unicode and Windows paths are handled correctly.
+- Fix the web font picker so Google Fonts remain available in Safari, local font access is requested on first open when supported, font sources are labeled, and Google font previews load lazily for visible rows.
+- Fix background blur rendering so it blurs the backdrop behind a layer instead of applying a no-op content filter, and keep effect parameter controls visible in the properties panel.
+
+## 0.12.0 — 2026-05-18
+
 ### Added
 
 - Assets panel — browse, search, and insert document components directly from the left sidebar.
@@ -18,12 +52,16 @@
 - Auto-layout inspector controls for min/max dimensions, auto gap, wrap gap, and two-axis padding.
 - Stroke dash/gap controls.
 - Font settings — local font access, fallback predownloads, and downloaded font cache management.
+- Editor commands for frame selection, paste to replace, Boolean operations, flatten, outline text, and outline stroke.
+- Boolean operations panel control and canvas context-menu entries for flattening and outlining supported selections.
 
 ### Changed
 
 - Smaller domain modules across core, app, Vue SDK, CLI, MCP, docs, and desktop with enforced package boundaries.
 - Separate scene and overlay canvas layers — rulers, labels, and selections no longer cause scene redraws.
 - Shared menu schema between browser and native Tauri menus.
+- Editor command metadata now drives shortcut display across browser menus, native menus, tooltips, and context menus.
+- Text-to-vector conversion now uses shared loaded-font outline geometry across Boolean, flatten, and outline commands.
 
 ### Fixes
 
@@ -49,13 +87,22 @@
 - Fix variable picker popovers and color binding swatches.
 - Fix dashed strokes on vector nodes and gradient fills on text.
 - Fix inner shadow rendering on text nodes.
+- Fix imported Figma-derived underlined text rendering.
 - Fix exponential `.fig` file growth on repeated save/load cycles.
+- Fix opening large `.fig` files so every page populates component instances, preventing missing nested content when switching pages.
 - Fix canvas size badges scaling with zoom.
 - Fix layout inspector dropdown anchoring and spacing/padding icon clarity.
 - Fix section drawing and color input forwarding in the property panel.
 - Fix asset insertion coordinates inside entered containers.
 - Fix MCP stdio handshake and eval return values.
 - Fix `@open-pencil/vue` npm imports referencing an unexported core subpath.
+- Fix Figma clipboard text compatibility — pasted OpenPencil text keeps editable fixed bounds, line wrapping, baselines, glyph offsets, and Figma edit-mode layout.
+- Fix local font matching so requested upright and weighted faces do not fall back to italic or regular faces.
+- Fix CanvasKit paragraph rendering to preserve requested text weights and slants.
+- Fix nested text editing interactions — drill double-click enters nested text edit mode, and clicking another text node switches edit targets while editing.
+- Fix auto-height text edit commits so text bounds and undo state stay in sync.
+- Fix Boolean, flatten, and outline operations to reject unsupported image/complex-script sources safely instead of silently dropping geometry.
+- Fix outline stroke enablement for stroked descendants inside groups and containers.
 
 ### Performance
 
@@ -335,13 +382,11 @@
 - Fix text typography lost on Figma clipboard import — preserve fontFamily, fontWeight, fontSize, lineHeight
 - Fix `copyFill` missing `gradientTransform` and `imageTransform` — gradient fills now round-trip correctly
 
-
 ### Performance
 
 - Event-driven rendering and component sync — `SceneGraph` emits typed events on mutations; `requestRender()` calls reduced from 94 to 22, component instance sync uses microtask batching with deduplication
 - Replace `structuredClone` with typed copy helpers for fills, strokes, effects, and style runs (~24× faster in hot paths)
 - Filter .fig unzip to only decompress canvas and image entries, skipping metadata cruft
-
 
 ### Improvements
 
@@ -470,7 +515,6 @@
 
 - Apple code signing and notarization for macOS builds
 - Git LFS storage moved from GitHub to Cloudflare R2
-
 
 ### Fixes
 

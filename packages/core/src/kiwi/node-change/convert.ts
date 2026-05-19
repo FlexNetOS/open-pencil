@@ -7,6 +7,7 @@ import { guidToString } from './guid'
 import { convertEffects, convertFills, convertStrokes } from './paint'
 import { importStyleRuns } from './style-runs'
 export { importStyleRuns } from './style-runs'
+import { convertFigmaDerivedTextGlyphs } from './derived-text-glyphs'
 import { convertLetterSpacing, convertLineHeight, mapTextDecoration } from './text-values'
 export { convertEffects, convertFills, convertStrokes, setVariableColorResolver } from './paint'
 export { convertLetterSpacing, convertLineHeight, mapTextDecoration } from './text-values'
@@ -16,6 +17,7 @@ import {
   extractPluginRelaunchData,
   getOpenPencilPluginValue,
   LAYOUT_DIRECTION_PLUGIN_KEY,
+  NODE_TYPE_PLUGIN_KEY,
   TEXT_DIRECTION_PLUGIN_KEY
 } from './plugin-data'
 import { resolveGeometryPaths, resolveVectorNetwork } from './vector-geometry'
@@ -252,8 +254,16 @@ function convertCornerProps(
   }
 }
 
+function importedTextLineHeight(nc: NodeChange): number | null {
+  const derivedLineHeight = nc.derivedTextData?.baselines?.[0]?.lineHeight
+  if (derivedLineHeight !== undefined && Number.isFinite(derivedLineHeight))
+    return derivedLineHeight
+  return convertLineHeight(nc.lineHeight, nc.fontSize)
+}
+
 function convertTextProps(
-  nc: NodeChange
+  nc: NodeChange,
+  blobs: Uint8Array[]
 ): Pick<
   SceneNode,
   | 'text'
@@ -272,6 +282,8 @@ function convertTextProps(
   | 'styleRuns'
   | 'textTruncation'
   | 'textDirection'
+  | 'figmaDerivedLayout'
+  | 'figmaDerivedTextGlyphs'
 > {
   return {
     text: nc.textData?.characters ?? '',
@@ -288,7 +300,7 @@ function convertTextProps(
     textAutoResize: (nc.textAutoResize ?? 'NONE') as TextAutoResize,
     textCase: (nc.textCase ?? 'ORIGINAL') as TextCase,
     textDecoration: mapTextDecoration(nc.textDecoration as string),
-    lineHeight: convertLineHeight(nc.lineHeight, nc.fontSize),
+    lineHeight: importedTextLineHeight(nc),
     letterSpacing: convertLetterSpacing(nc.letterSpacing, nc.fontSize),
     maxLines: (nc.maxLines ?? null) as number | null,
     styleRuns: importStyleRuns(nc),
@@ -296,7 +308,14 @@ function convertTextProps(
     textDirection:
       (getOpenPencilPluginValue(nc, TEXT_DIRECTION_PLUGIN_KEY) as
         | SceneNode['textDirection']
-        | null) || 'AUTO'
+        | null) || 'AUTO',
+    figmaDerivedLayout: nc.derivedTextData?.layoutSize
+      ? {
+          width: nc.derivedTextData.layoutSize.x,
+          height: nc.derivedTextData.layoutSize.y
+        }
+      : null,
+    figmaDerivedTextGlyphs: convertFigmaDerivedTextGlyphs(nc.derivedTextData, blobs)
   }
 }
 
@@ -308,6 +327,26 @@ function convertLayoutPadding(
     paddingBottom: nc.stackPaddingBottom ?? nc.stackVerticalPadding ?? nc.stackPadding ?? 0,
     paddingLeft: nc.stackHorizontalPadding ?? nc.stackPadding ?? 0,
     paddingRight: nc.stackPaddingRight ?? nc.stackHorizontalPadding ?? nc.stackPadding ?? 0
+  }
+}
+
+function visibleContainerDerivedLayout(
+  nc: NodeChange,
+  layoutMode: SceneNode['layoutMode'],
+  primaryAxisSizing: SceneNode['primaryAxisSizing'],
+  counterAxisSizing: SceneNode['counterAxisSizing']
+): SceneNode['figmaDerivedLayout'] | undefined {
+  const hasHugAxis = primaryAxisSizing === 'HUG' || counterAxisSizing === 'HUG'
+  const hasVisiblePaint =
+    (nc.fillPaints?.some((paint) => paint.visible !== false) ?? false) ||
+    (nc.strokePaints?.some((paint) => paint.visible !== false) ?? false)
+  if (layoutMode === 'NONE' || !hasHugAxis || !hasVisiblePaint) return undefined
+
+  return {
+    x: nc.transform?.m02 ?? 0,
+    y: nc.transform?.m12 ?? 0,
+    width: nc.size?.x ?? 100,
+    height: nc.size?.y ?? 100
   }
 }
 
@@ -334,13 +373,24 @@ function convertLayoutProps(
   | 'itemReverseZIndex'
   | 'strokesIncludedInLayout'
   | 'layoutDirection'
-> {
+> &
+  Partial<Pick<SceneNode, 'figmaDerivedLayout'>> {
+  const layoutMode = mapStackMode(nc.stackMode)
+  const primaryAxisSizing = mapStackSizing(nc.stackPrimarySizing)
+  const counterAxisSizing = mapStackSizing(nc.stackCounterSizing)
+  const figmaDerivedLayout = visibleContainerDerivedLayout(
+    nc,
+    layoutMode,
+    primaryAxisSizing,
+    counterAxisSizing
+  )
+
   return {
-    layoutMode: mapStackMode(nc.stackMode),
+    layoutMode,
     itemSpacing: nc.stackSpacing ?? 0,
     ...convertLayoutPadding(nc),
-    primaryAxisSizing: mapStackSizing(nc.stackPrimarySizing),
-    counterAxisSizing: mapStackSizing(nc.stackCounterSizing),
+    primaryAxisSizing,
+    counterAxisSizing,
     primaryAxisAlign: mapStackJustify(nc.stackPrimaryAlignItems ?? nc.stackJustify),
     counterAxisAlign: mapStackCounterAlign(nc.stackCounterAlignItems ?? nc.stackCounterAlign),
     layoutWrap: nc.stackWrap === 'WRAP' ? 'WRAP' : 'NO_WRAP',
@@ -355,7 +405,8 @@ function convertLayoutProps(
     layoutDirection:
       (getOpenPencilPluginValue(nc, LAYOUT_DIRECTION_PLUGIN_KEY) as
         | SceneNode['layoutDirection']
-        | null) || 'AUTO'
+        | null) || 'AUTO',
+    ...(figmaDerivedLayout ? { figmaDerivedLayout } : {})
   }
 }
 
@@ -397,7 +448,12 @@ export function nodeChangeToProps(
   blobs: Uint8Array[]
 ): Partial<SceneNode> & { nodeType: NodeType | 'DOCUMENT' | 'VARIABLE' } {
   let nodeType = mapNodeType(nc.type)
-  if (nodeType === 'FRAME' && isComponentSet(nc)) nodeType = 'COMPONENT_SET'
+  if (
+    (nodeType === 'FRAME' && isComponentSet(nc)) ||
+    getOpenPencilPluginValue(nc, NODE_TYPE_PLUGIN_KEY) === 'COMPONENT_SET'
+  ) {
+    nodeType = 'COMPONENT_SET'
+  }
 
   const vectorAndStrokeProps = convertVectorAndStrokeProps(nc, blobs)
 
@@ -420,7 +476,7 @@ export function nodeChangeToProps(
     ),
     effects: convertEffects(nc.effects),
     ...convertCornerProps(nc),
-    ...convertTextProps(nc),
+    ...convertTextProps(nc, blobs),
     horizontalConstraint: mapConstraint(nc.horizontalConstraint as string),
     verticalConstraint: mapConstraint(nc.verticalConstraint as string),
     ...convertLayoutProps(nc),

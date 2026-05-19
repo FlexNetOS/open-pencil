@@ -1,9 +1,11 @@
 import { shallowRef, computed, triggerRef } from 'vue'
 
+import { BUILTIN_IO_FORMATS, IORegistry } from '@open-pencil/core/io'
+import { readFigFile } from '@open-pencil/core/io/formats/fig'
+import { computeAllLayouts } from '@open-pencil/core/layout'
 import type { SceneGraph } from '@open-pencil/core/scene-graph'
 
 import { setOpenPencilStore } from '@/app/browser-bridge'
-import { readDesignFile } from '@/app/document/io/read-design-file'
 import { setActiveEditorStore } from '@/app/editor/active-store'
 import { createEditorStore } from '@/app/editor/session'
 import type { EditorStore } from '@/app/editor/session'
@@ -12,6 +14,8 @@ export interface Tab {
   id: string
   store: EditorStore
 }
+
+const io = new IORegistry(BUILTIN_IO_FORMATS)
 
 let nextTabId = 1
 
@@ -82,7 +86,9 @@ export function closeTab(tabId: string) {
 }
 
 function yieldToUI(): Promise<void> {
-  return new Promise((resolve) => requestAnimationFrame(() => resolve()))
+  return new Promise((resolve) => {
+    requestAnimationFrame(() => resolve())
+  })
 }
 
 export async function openFileInNewTab(
@@ -101,8 +107,16 @@ export async function openFileInNewTab(
   await yieldToUI()
 
   try {
-    const { graph: imported, sourceFormat } = await readDesignFile(file)
+    const isFig = file.name.toLowerCase().endsWith('.fig')
+    const { graph: imported, sourceFormat } = isFig
+      ? { graph: await readFigFile(file), sourceFormat: 'fig' }
+      : await io.readDocument({
+          name: file.name,
+          mimeType: file.type || undefined,
+          data: new Uint8Array(await file.arrayBuffer())
+        })
 
+    computeAllLayouts(imported)
     store.replaceGraph(imported)
     store.undo.clear()
     store.setDocumentSource(file.name, sourceFormat, handle, path)
