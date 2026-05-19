@@ -134,14 +134,6 @@ pub fn run() {
         .build(tauri::generate_context!())
         .expect("error while building tauri application")
         .run(|app, event| match event {
-            tauri::RunEvent::Opened { urls } => {
-                let paths = urls
-                    .into_iter()
-                    .filter_map(|url| url.to_file_path().ok())
-                    .filter_map(file_association_path)
-                    .collect();
-                queue_open_paths(app, paths);
-            }
             #[cfg(target_os = "macos")]
             tauri::RunEvent::Reopen {
                 has_visible_windows,
