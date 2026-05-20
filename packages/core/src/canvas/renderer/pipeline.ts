@@ -5,6 +5,8 @@ import type { EditorState } from '#core/editor/types'
 import { computeDescendantVisualBounds } from '#core/geometry'
 import type { SceneGraph } from '#core/scene-graph'
 
+import { renderSceneBacking, updateSceneBackingPreviewState } from './retained-backing'
+
 export function renderSceneToCanvas(
   r: SkiaRenderer,
   canvas: Canvas,
@@ -153,6 +155,7 @@ export function render(
     w: r.viewportWidth / r.zoom,
     h: r.viewportHeight / r.zoom
   }
+  updateSceneBackingPreviewState(r, layer)
 
   const hasPositionPreview =
     graph.positionPreviewVersion !== r.scenePicturePositionPreviewVersion &&
@@ -171,34 +174,23 @@ export function render(
   if (layer !== 'overlays') {
     canvas.save()
     canvas.scale(r.dpr, r.dpr)
-    canvas.translate(r.panX, r.panY)
-    canvas.scale(r.zoom, r.zoom)
 
     p.beginPhase('render:scene')
-    if (canUsePicture) {
-      p.setScenePictureMode('hit')
-      p.beginPhase('render:drawPicture')
-      if (r.scenePicture) {
-        const picture = r.scenePicture
-        const { duration } = measure(() => canvas.drawPicture(picture))
-        p.setScenePictureDrawTime(duration)
-      }
-      p.endPhase('render:drawPicture')
-    } else if (hasVolatileOverlays) {
-      p.setScenePictureMode('volatile', cacheMissReason)
-      r._nodeCount = 0
-      r._culledCount = 0
-      p.beginPhase('render:volatile')
-      renderPageChildren(r, canvas, graph, overlays)
-      p.endPhase('render:volatile')
+    if (layer === 'scene' && !hasVolatileOverlays && renderSceneBacking(r, canvas, graph, sceneVersion)) {
+      p.setScenePictureMode('hit', 'backing')
     } else {
-      p.setScenePictureMode('record', cacheMissReason)
-      r._nodeCount = 0
-      r._culledCount = 0
-      p.beginPhase('render:recordPicture')
-      const { duration } = measure(() => recordScenePicture(r, canvas, graph, sceneVersion))
-      p.setScenePictureRecordTime(duration)
-      p.endPhase('render:recordPicture')
+      canvas.translate(r.panX, r.panY)
+      canvas.scale(r.zoom, r.zoom)
+      renderSceneContent(
+        r,
+        canvas,
+        graph,
+        overlays,
+        sceneVersion,
+        canUsePicture,
+        cacheMissReason,
+        hasVolatileOverlays
+      )
     }
     p.endPhase('render:scene')
 
@@ -253,6 +245,44 @@ export function render(
 
   p.setNodeCounts(r._nodeCount, r._culledCount)
   p.endFrame()
+}
+
+function renderSceneContent(
+  r: SkiaRenderer,
+  canvas: Canvas,
+  graph: SceneGraph,
+  overlays: RenderOverlays,
+  sceneVersion: number,
+  canUsePicture: boolean,
+  cacheMissReason: string,
+  hasVolatileOverlays: boolean
+): void {
+  const p = r.profiler
+  if (canUsePicture) {
+    p.setScenePictureMode('hit')
+    p.beginPhase('render:drawPicture')
+    if (r.scenePicture) {
+      const picture = r.scenePicture
+      const { duration } = measure(() => canvas.drawPicture(picture))
+      p.setScenePictureDrawTime(duration)
+    }
+    p.endPhase('render:drawPicture')
+  } else if (hasVolatileOverlays) {
+    p.setScenePictureMode('volatile', cacheMissReason)
+    r._nodeCount = 0
+    r._culledCount = 0
+    p.beginPhase('render:volatile')
+    renderPageChildren(r, canvas, graph, overlays)
+    p.endPhase('render:volatile')
+  } else {
+    p.setScenePictureMode('record', cacheMissReason)
+    r._nodeCount = 0
+    r._culledCount = 0
+    p.beginPhase('render:recordPicture')
+    const { duration } = measure(() => recordScenePicture(r, canvas, graph, sceneVersion))
+    p.setScenePictureRecordTime(duration)
+    p.endPhase('render:recordPicture')
+  }
 }
 
 function renderPageChildren(

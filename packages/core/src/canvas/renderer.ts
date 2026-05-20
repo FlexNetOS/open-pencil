@@ -44,6 +44,13 @@ import type {
   Paragraph
 } from 'canvaskit-wasm'
 
+export interface SubtreePictureCacheEntry {
+  picture: SkPicture
+  pageId: string | null
+  sceneVersion: number
+  positionPreviewVersion: number
+}
+
 import type { RenderOverlays, RulerTheme } from './renderer/types'
 
 export class SkiaRenderer {
@@ -80,7 +87,53 @@ export class SkiaRenderer {
   scenePictureVersion = -1
   scenePicturePositionPreviewVersion = -1
   scenePicturePageId: string | null = null
+  sceneBacking: {
+    image: CKImage
+    pageId: string | null
+    sceneVersion: number
+    positionPreviewVersion: number
+    panX: number
+    panY: number
+    zoom: number
+    width: number
+    height: number
+    dpr: number
+    worldX: number
+    worldY: number
+    worldWidth: number
+    worldHeight: number
+  } | null = null
+  sceneBackingPreviewUntil = 0
+  sceneBackingNeedsCrispRender = false
+  sceneBackingBuild: {
+    surface: Surface
+    graph: SceneGraph
+    childIds: string[]
+    index: number
+    startedAt: number
+    pageId: string | null
+    sceneVersion: number
+    positionPreviewVersion: number
+    panX: number
+    panY: number
+    zoom: number
+    width: number
+    height: number
+    dpr: number
+    worldX: number
+    worldY: number
+    worldWidth: number
+    worldHeight: number
+  } | null = null
+  sceneBackingAverageRecordMs = 40
+  sceneBackingAverageViewportIntervalMs = 80
+  sceneBackingLastViewportEventAt = 0
+  lastSceneViewport: { panX: number; panY: number; zoom: number } | null = null
   nodePictureCache = new Map<string, SkPicture | null>()
+  subtreePictureCache = new Map<string, SubtreePictureCacheEntry>()
+  subtreePictureCachePageId: string | null = null
+  subtreePictureCacheSceneVersion = -1
+  subtreePictureCachePositionPreviewVersion = -1
   readonly labelCache = new LabelCache()
   readonly profiler: RenderProfiler
 

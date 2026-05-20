@@ -303,7 +303,7 @@ export function renderShape(
  * Returns the child to use for shadow shape, or null to use the node itself.
  */
 function getShadowShapeChild(node: SceneNode, graph: SceneGraph): SceneNode | null {
-  if (node.fills.some((f) => f.visible) || node.fillGeometry.length > 0) return null
+  if (node.fills.some((f) => f.visible)) return null
   if (node.childIds.length === 0) return null
   const child = graph.getNode(node.childIds[0])
   if (!child?.visible) return null
@@ -449,7 +449,13 @@ function drawNodeStroke(
   vectorPaths: Path[] | null,
   vectorStroke: Path[] | null
 ): void {
-  if (!sg && vectorStroke && stroke.align === 'CENTER' && node.cornerRadius === 0) {
+  const shouldStrokeVectorCenterline =
+    vectorStroke &&
+    stroke.align === 'CENTER' &&
+    node.cornerRadius === 0 &&
+    node.type === 'VECTOR' &&
+    !node.fills.some((fill) => fill.visible)
+  if (shouldStrokeVectorCenterline) {
     const outlineKey = `${node.id}|${stroke.weight}|${stroke.cap ?? 'NONE'}|${stroke.join ?? 'MITER'}`
     drawVectorPathStrokes(r, canvas, vectorStroke, stroke, sc, outlineKey)
     return

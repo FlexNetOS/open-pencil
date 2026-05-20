@@ -1,4 +1,4 @@
-import type { Canvas } from 'canvaskit-wasm'
+import type { Canvas, Path } from 'canvaskit-wasm'
 
 import type { SceneNode } from '#core/scene-graph'
 
@@ -46,12 +46,15 @@ function drawShapeDropShadow(
   const sp = effect.spread
   const shapeNode = shadowShapeChild ?? node
   const shapeHasRadius = shadowShapeChild ? nodeHasRadius(shadowShapeChild) : hasRadius
-  const geometryShadow = !shadowShapeChild
-    ? r.getFillGeometry(node) ??
-      (!node.fills.some((fill) => fill.visible) && node.strokeGeometry.length > 0
-        ? r.getStrokeGeometry(node)
-        : null)
-    : null
+  const hasVisibleFill = node.fills.some((fill) => fill.visible)
+  let geometryShadow: Path[] | null = null
+  if (!shadowShapeChild) {
+    if (hasVisibleFill) {
+      geometryShadow = r.getFillGeometry(node)
+    } else if (node.strokeGeometry.length > 0) {
+      geometryShadow = r.getStrokeGeometry(node)
+    }
+  }
 
   r.auxFill.setColor(r.color4f(effect.color.r, effect.color.g, effect.color.b, effect.color.a))
   r.auxFill.setMaskFilter(r.getCachedMaskBlur(effect.radius / 2))
@@ -61,8 +64,30 @@ function drawShapeDropShadow(
   if (shadowShapeChild) drawChildTransform(canvas, shadowShapeChild, effect.offset)
   else canvas.translate(effect.offset.x, effect.offset.y)
 
+  const shouldHideShadowBehindUnfilledNode =
+    effect.showShadowBehindNode === false && !hasVisibleFill && !shadowShapeChild
+  if (shouldHideShadowBehindUnfilledNode) {
+    r.effectLayerPaint.setImageFilter(null)
+    r.effectLayerPaint.setColorFilter(null)
+    r.effectLayerPaint.setBlendMode(r.ck.BlendMode.SrcOver)
+    canvas.saveLayer(r.effectLayerPaint)
+  }
+
   if (geometryShadow) {
     for (const path of geometryShadow) canvas.drawPath(path, r.auxFill)
+    if (shouldHideShadowBehindUnfilledNode) {
+      const fillGeometry = r.getFillGeometry(node)
+      if (fillGeometry) {
+        r.auxFill.setMaskFilter(null)
+        r.auxFill.setColor(r.ck.BLACK)
+        r.auxFill.setBlendMode(r.ck.BlendMode.DstOut)
+        canvas.save()
+        canvas.translate(-effect.offset.x, -effect.offset.y)
+        for (const path of fillGeometry) canvas.drawPath(path, r.auxFill)
+        canvas.restore()
+        r.auxFill.setBlendMode(r.ck.BlendMode.SrcOver)
+      }
+    }
   } else if (shapeNode.type === 'ELLIPSE') {
     canvas.drawOval(r.ltrb(-sp, -sp, shapeNode.width + sp, shapeNode.height + sp), r.auxFill)
   } else if (shapeHasRadius) {
@@ -70,8 +95,15 @@ function drawShapeDropShadow(
   } else {
     canvas.drawRect(r.ltrb(-sp, -sp, shapeNode.width + sp, shapeNode.height + sp), r.auxFill)
   }
+  if (shouldHideShadowBehindUnfilledNode) {
+    canvas.restore()
+    r.effectLayerPaint.setImageFilter(null)
+    r.effectLayerPaint.setColorFilter(null)
+    r.effectLayerPaint.setBlendMode(r.ck.BlendMode.SrcOver)
+  }
   canvas.restore()
   r.auxFill.setMaskFilter(null)
+  r.auxFill.setBlendMode(r.ck.BlendMode.SrcOver)
 }
 
 function renderDropShadow(
